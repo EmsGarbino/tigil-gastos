@@ -1,0 +1,10 @@
+C:\Users\Emerita Garbino\tigil-gastos\contract\target\debug\deps\arbitrary-f7b21d0158ed276c.d: C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\lib.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\error.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\unstructured.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\size_hint.rs
+
+C:\Users\Emerita Garbino\tigil-gastos\contract\target\debug\deps\libarbitrary-f7b21d0158ed276c.rlib: C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\lib.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\error.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\unstructured.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\size_hint.rs
+
+C:\Users\Emerita Garbino\tigil-gastos\contract\target\debug\deps\libarbitrary-f7b21d0158ed276c.rmeta: C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\lib.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\error.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\unstructured.rs C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\size_hint.rs
+
+C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\lib.rs:
+C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\error.rs:
+C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\unstructured.rs:
+C:\Users\Emerita\ Garbino\.cargo\registry\src\index.crates.io-1949cf8c6b5b557f\arbitrary-1.3.2\src\size_hint.rs:

@@ -1,0 +1,243 @@
+/* ── STATS STRIP ─────────────────────────────────────────── */
+.stats-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.25rem 1rem;
+  margin: 1.25rem 0 0.75rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.stat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+.stat-n {
+  font-family: var(--font-mono);
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: var(--text);
+  transition: color 0.3s;
+}
+.stat-n.gold { color: var(--gold); }
+.stat-l {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text3);
+  font-weight: 700;
+}
+.stat-div {
+  width: 1px;
+  height: 36px;
+  background: var(--border2);
+}
+
+/* ── PROGRESS BAR ────────────────────────────────────────── */
+.prog-track {
+  background: var(--surface2);
+  border-radius: 999px;
+  height: 10px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+}
+.prog-fill {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--gold2), var(--gold), #fff8b0);
+  border-radius: 999px;
+  transition: width 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
+  position: relative;
+}
+.prog-fill::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px;
+  background: #ffffff40;
+  border-radius: 999px;
+  animation: progGlow 1.5s ease-in-out infinite;
+}
+.prog-fill.locked { background: linear-gradient(90deg, var(--purple2), var(--purple)); }
+.prog-fill.completed { background: linear-gradient(90deg, var(--green2), var(--green)); }
+.prog-label {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  font-family: var(--font-mono);
+  color: #000;
+  font-weight: 700;
+  opacity: 0;
+}
+
+/* ── ACTION CARDS ────────────────────────────────────────── */
+.action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+.act-card {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color 0.3s;
+}
+.act-card:hover { border-color: var(--border); }
+.act-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.4rem;
+}
+.act-icon { font-size: 1.3rem; }
+.act-card h3 {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text);
+}
+.act-desc {
+  font-size: 0.78rem;
+  color: var(--text3);
+  line-height: 1.5;
+  flex: 1;
+}
+
+/* ── LOG PANEL ───────────────────────────────────────────── */
+.log-panel {
+  background: var(--bg2);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.log-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+}
+.log-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+}
+.log-title {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--text2);
+  flex: 1;
+}
+.log-badge {
+  font-size: 0.65rem;
+  font-family: var(--font-mono);
+  font-weight: 500;
+  background: var(--purple-glow);
+  color: var(--purple);
+  border: 1px solid var(--purple);
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+.log-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  max-height: 180px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.log-item {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: var(--surface);
+  border-left: 3px solid transparent;
+  color: var(--text3);
+  animation: fadeUp 0.3s ease both;
+}
+.log-init    { border-left-color: var(--gold);   color: var(--gold); }
+.log-deposit { border-left-color: var(--green);  color: var(--green); }
+.log-lock    { border-left-color: var(--purple); color: var(--purple); }
+.log-unlock  { border-left-color: #fb923c;       color: #fb923c; }
+.log-claim   { border-left-color: var(--green);  color: var(--green); }
+
+/* ── HISTORY ─────────────────────────────────────────────── */
+.hist-panel {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  margin-bottom: 1.25rem;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+}
+.hist-title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text2);
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.hist-empty {
+  text-align: center;
+  color: var(--text3);
+  font-size: 0.85rem;
+  padding: 1rem 0;
+}
+.hist-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 1fr;
+  gap: 8px;
+  padding: 9px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  align-items: center;
+  animation: fadeUp 0.3s ease both;
+  border-bottom: 1px solid var(--border);
+}
+.hist-row:last-child { border-bottom: none; }
+.hist-row:hover { background: var(--surface2); }
+.hist-head {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--border2);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.hist-date { color: var(--text3); font-family: var(--font-mono); font-size: 0.72rem; }
+.hist-action { color: var(--text2); font-weight: 700; }
+.hist-amt-dep { color: var(--green); font-family: var(--font-mono); font-weight: 600; }
+.hist-amt-wit { color: var(--red); font-family: var(--font-mono); font-weight: 600; }
+.hist-balance { color: var(--text2); font-family: var(--font-mono); font-size: 0.75rem; }
+
+/* ── RESET ROW ───────────────────────────────────────────── */
+.reset-row { display: flex; justify-content: center; padding: 0.5rem 0; }

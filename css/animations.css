@@ -1,0 +1,86 @@
+/* ── KEYFRAMES ───────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes shimmer {
+  0%,100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes gentleBob {
+  0%,100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+@keyframes floatUp {
+  from { transform: translateY(0) rotate(0deg); opacity: 0.06; }
+  10%  { opacity: 0.1; }
+  90%  { opacity: 0.06; }
+  to   { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+}
+@keyframes dropCoin {
+  0%   { top: -30px; opacity: 0; }
+  20%  { opacity: 1; }
+  70%  { top: 60px; opacity: 1; }
+  80%  { top: 60px; opacity: 0; }
+  100% { top: -30px; opacity: 0; }
+}
+@keyframes waveAnim {
+  0%,100% { transform: scaleY(1) translateX(0); }
+  50% { transform: scaleY(1.5) translateX(6px); }
+}
+@keyframes coinDrop {
+  0%   { top: -30px; opacity: 1; transform: rotate(0deg) scale(1.2); }
+  80%  { top: 24px; opacity: 1; transform: rotate(180deg) scale(0.8); }
+  100% { top: 28px; opacity: 0; transform: rotate(240deg) scale(0.5); }
+}
+@keyframes progGlow {
+  0%,100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+@keyframes pulse {
+  0%,100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ── FLOATING BG COINS ──────────────────────────────────── */
+.bg-coins {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.coin {
+  position: absolute;
+  font-family: var(--font-mono);
+  font-size: 1.4rem;
+  color: var(--gold);
+  opacity: 0.06;
+  animation: floatUp linear infinite;
+  user-select: none;
+}
+.c1 { left: 8%;  bottom: -80px; animation-duration: 14s; animation-delay: 0s;   font-size: 1.8rem; }
+.c2 { left: 22%; bottom: -80px; animation-duration: 19s; animation-delay: 3s; }
+.c3 { left: 45%; bottom: -80px; animation-duration: 16s; animation-delay: 6s;   font-size: 1.1rem; }
+.c4 { left: 63%; bottom: -80px; animation-duration: 21s; animation-delay: 1s; }
+.c5 { left: 80%; bottom: -80px; animation-duration: 13s; animation-delay: 9s;   font-size: 1.6rem; }
+.c6 { left: 91%; bottom: -80px; animation-duration: 17s; animation-delay: 4s;   font-size: 1rem; }
+
+/* ── SETUP JAR ANIMATION ─────────────────────────────────── */
+.anim-coin {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-mono);
+  font-size: 1.2rem;
+  color: var(--gold);
+  animation: dropCoin 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 6px var(--gold));
+}
+.anim-coin.d2 { animation-delay: 0.8s; left: 35%; }
+.anim-coin.d3 { animation-delay: 1.6s; left: 62%; }

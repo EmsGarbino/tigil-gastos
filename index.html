@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TigilGastos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/main.css"/>
+</head>
+<body>
+
+  <div class="bg-coins" aria-hidden="true">
+    <span class="coin c1">₱</span>
+    <span class="coin c2">₱</span>
+    <span class="coin c3">₱</span>
+    <span class="coin c4">₱</span>
+    <span class="coin c5">₱</span>
+    <span class="coin c6">₱</span>
+  </div>
+
+  <div class="app">
+
+    <header class="header">
+      <div class="wordmark">
+        <!-- Clean SVG jar logo -->
+        <svg class="wordmark-logo" width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Lid -->
+          <rect x="7" y="1" width="24" height="9" rx="3" fill="#f5c542"/>
+          <!-- Coin slot -->
+          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#1a1200"/>
+          <!-- Jar body -->
+          <rect x="3" y="10" width="32" height="31" rx="9" fill="#1e1e32" stroke="#f5c542" stroke-width="1.5"/>
+          <!-- Left shine strip -->
+          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#ffffff0d"/>
+          <!-- Peso sign -->
+          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#f5c542" opacity="0.65">₱</text>
+        </svg>
+        <div>
+          <h1 class="wordmark-title">TigilGastos</h1>
+          <p class="wordmark-sub">Locked savings for students</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- SETUP SCREEN -->
+    <section id="setup-screen" class="screen">
+      <div class="setup-hero">
+        <div class="setup-jar-anim" aria-hidden="true">
+          <div class="anim-jar">
+            <div class="anim-coin">₱</div>
+            <div class="anim-coin d2">₱</div>
+            <div class="anim-coin d3">₱</div>
+          </div>
+        </div>
+        <h2 class="setup-title">Start your savings jar</h2>
+        <p class="setup-desc">Set a goal, lock it in, and resist the urge to spend.</p>
+      </div>
+
+      <div class="glass-card">
+
+        <!-- Savings category dropdown -->
+        <div class="field">
+          <label class="lbl" for="goal-category">What are you saving for?</label>
+          <div class="select-wrap">
+            <select class="inp sel" id="goal-category">
+              <option value="" disabled selected>Choose a category…</option>
+              <optgroup label="🎓 Education">
+                <option value="Tuition Fee">Tuition Fee</option>
+                <option value="Semester Enrollment">Semester Enrollment</option>
+                <option value="Books &amp; School Supplies">Books &amp; School Supplies</option>
+                <option value="Laptop / Gadget">Laptop / Gadget</option>
+                <option value="Review / Exam Fee">Review / Exam Fee</option>
+              </optgroup>
+              <optgroup label="🏠 Living">
+                <option value="Boarding House Rent">Boarding House Rent</option>
+                <option value="Monthly Allowance">Monthly Allowance</option>
+                <option value="Grocery / Food">Grocery / Food</option>
+                <option value="Transportation">Transportation</option>
+              </optgroup>
+              <optgroup label="🌟 Goals">
+                <option value="Emergency Fund">Emergency Fund</option>
+                <option value="Travel / Vacation">Travel / Vacation</option>
+                <option value="Gift / Celebration">Gift / Celebration</option>
+                <option value="Side Business">Side Business</option>
+              </optgroup>
+              <optgroup label="✏️ Custom">
+                <option value="__custom__">Other (type my own)…</option>
+              </optgroup>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+        </div>
+
+        <!-- Shown only when "Other" is picked -->
+        <div class="field hidden" id="custom-goal-field">
+          <label class="lbl" for="goal-name">Describe your goal</label>
+          <input class="inp" type="text" id="goal-name" placeholder="e.g., New Phone Fund" maxlength="50"/>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label class="lbl">Target Amount</label>
+            <div class="inp-prefix-wrap">
+              <span class="prefix">₱</span>
+              <input class="inp inp-prefixed" type="number" id="goal-amount" placeholder="8000" min="1"/>
+            </div>
+          </div>
+          <div class="field">
+            <label class="lbl">Target Date</label>
+            <input class="inp" type="date" id="target-date"/>
+          </div>
+        </div>
+
+        <p class="err" id="setup-err"></p>
+        <button class="btn-main" id="create-btn">
+          <span>🔒</span> Create My Jar
+        </button>
+      </div>
+    </section>
+
+    <!-- TRACKER SCREEN -->
+    <section id="tracker-screen" class="screen hidden">
+
+      <div class="jar-hero">
+        <div class="jar-meta">
+          <h2 class="jar-goal-name" id="disp-name">Tuition Fund</h2>
+          <div class="jar-badges">
+            <span class="chip chip-date" id="disp-date"></span>
+            <span class="chip" id="lock-chip">Unlocked 🔓</span>
+          </div>
+        </div>
+
+        <div class="jar-stage">
+          <div class="jar-body">
+            <div class="jar-lid">
+              <div class="jar-slot" id="jar-slot"></div>
+            </div>
+            <div class="jar-vessel">
+              <div class="jar-fill" id="jar-fill">
+                <div class="jar-wave"></div>
+              </div>
+              <div class="jar-pct" id="jar-pct">0%</div>
+              <div class="jar-shine"></div>
+            </div>
+          </div>
+          <div class="coin-drop-wrap">
+            <div class="coin-drop" id="coin-drop">₱</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stats-strip">
+        <div class="stat">
+          <span class="stat-n gold" id="stat-saved">₱0</span>
+          <span class="stat-l">Saved</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n" id="stat-goal">₱0</span>
+          <span class="stat-l">Goal</span>
+        </div>
+        <div class="stat-div"></div>
+        <div class="stat">
+          <span class="stat-n" id="stat-left">₱0</span>
+          <span class="stat-l">Remaining</span>
+        </div>
+      </div>
+
+      <div class="prog-track">
+        <div class="prog-fill" id="prog-fill"></div>
+        <span class="prog-label" id="prog-label">0%</span>
+      </div>
+
+      <div class="action-row">
+        <div class="act-card">
+          <div class="act-card-top">
+            <span class="act-icon">💰</span>
+            <h3>Drop Coins</h3>
+          </div>
+          <div class="inp-prefix-wrap">
+            <span class="prefix">₱</span>
+            <input class="inp inp-prefixed inp-dark" type="number" id="deposit-amt" placeholder="500" min="1"/>
+          </div>
+          <p class="err" id="dep-err"></p>
+          <button class="btn-action btn-gold" id="deposit-btn">+ Add to Jar</button>
+        </div>
+
+        <div class="act-card">
+          <div class="act-card-top">
+            <span class="act-icon" id="lock-icon">🔒</span>
+            <h3 id="lock-card-title">Lock Controls</h3>
+          </div>
+          <p class="act-desc" id="lock-desc">Activate the lock to guard your savings from yourself.</p>
+          <p class="err" id="lock-err"></p>
+          <button class="btn-action btn-purple" id="lock-btn">🔒 Lock Jar</button>
+          <button class="btn-action btn-green hidden" id="withdraw-btn">💸 Withdraw</button>
+        </div>
+      </div>
+
+      <div class="log-panel">
+        <div class="log-header">
+          <span class="log-dot"></span>
+          <span class="log-title">Smart Contract Log</span>
+          <span class="log-badge">Soroban</span>
+        </div>
+        <ul class="log-list" id="log-list"></ul>
+      </div>
+
+      <div class="hist-panel">
+        <h3 class="hist-title">Transaction History</h3>
+        <div class="hist-body" id="hist-body">
+          <p class="hist-empty" id="hist-empty">No transactions yet. Drop your first coin! 🪙</p>
+        </div>
+      </div>
+
+      <div class="reset-row">
+        <button class="btn-ghost" id="reset-btn">↺ Start New Goal</button>
+      </div>
+    </section>
+
+    <div class="success-banner hidden" id="success-banner">
+      <span class="success-icon">🎉</span>
+      <div>
+        <strong>Goal Reached!</strong>
+        <p>You saved your full target. Your jar is now open for withdrawal.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* Toggle custom goal input based on dropdown */
+    const categorySelect = document.getElementById('goal-category');
+    const customField    = document.getElementById('custom-goal-field');
+    const goalNameInput  = document.getElementById('goal-name');
+
+    categorySelect.addEventListener('change', () => {
+      if (categorySelect.value === '__custom__') {
+        customField.classList.remove('hidden');
+        goalNameInput.focus();
+      } else {
+        customField.classList.add('hidden');
+        goalNameInput.value = '';
+      }
+    });
+  </script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+/* Fonts are loaded via <link> in index.html for better performance */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg: #0d0d18;
+  --bg2: #13131f;
+  --bg3: #1a1a2e;
+  --surface: #1e1e32;
+  --surface2: #252540;
+  --border: #ffffff10;
+  --border2: #ffffff1a;
+  --gold: #f5c542;
+  --gold2: #e0a800;
+  --gold-glow: #f5c54240;
+  --purple: #8b5cf6;
+  --purple2: #7c3aed;
+  --purple-glow: #8b5cf630;
+  --green: #22c55e;
+  --green2: #16a34a;
+  --green-glow: #22c55e30;
+  --red: #ef4444;
+  --text: #f1f5f9;
+  --text2: #94a3b8;
+  --text3: #64748b;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 4rem;
+  overflow-x: hidden;
+  position: relative;
+}
