@@ -9,8 +9,10 @@
 
 /* ── HEADER ─────────────────────────────────────────────── */
 .header {
-  padding: 1rem 0 2rem;
+  padding: 1.25rem 0 2rem;
   animation: fadeDown 0.5s ease both;
+  border-bottom: 1.5px solid var(--border2);
+  margin-bottom: 0.5rem;
 }
 .wordmark {
   display: flex;
@@ -19,27 +21,27 @@
 }
 .wordmark-logo {
   flex-shrink: 0;
-  filter: drop-shadow(0 0 10px var(--gold-glow));
+  filter: drop-shadow(0 2px 6px var(--gold-glow));
   animation: gentleBob 3s ease-in-out infinite;
 }
 .wordmark-title {
   font-family: var(--font-display);
   font-size: 1.9rem;
   font-weight: 700;
-  background: linear-gradient(135deg, var(--gold), #fff8dc, var(--gold));
-  background-size: 200% 200%;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  animation: shimmer 4s ease infinite;
+  color: var(--text);
   line-height: 1;
+  letter-spacing: -0.02em;
+}
+.wordmark-title span {
+  color: var(--gold);
 }
 .wordmark-sub {
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   color: var(--text3);
-  margin-top: 2px;
-  letter-spacing: 0.04em;
+  margin-top: 3px;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
+  font-weight: 500;
 }
 
 /* ── SCREENS ─────────────────────────────────────────────── */

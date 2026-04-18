@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TigilGastos — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f5f0e8;
+      --bg2:       #ede7d9;
+      --bg3:       #e4dccb;
+      --surface:   #faf7f2;
+      --surface2:  #ede7d9;
+      --border:    #c9bfa820;
+      --border2:   #b8a98840;
+      --gold:      #c8860a;
+      --gold2:     #a36808;
+      --gold-light: #f5c542;
+      --gold-glow: #c8860a25;
+      --gold-bg:   #fef3d0;
+      --green:     #3a7d5a;
+      --green2:    #2d6147;
+      --green-glow: #3a7d5a20;
+      --red:       #c0392b;
+      --text:      #2c1f0e;
+      --text2:     #6b5740;
+      --text3:     #9c8468;
+      --radius:    14px;
+      --radius-sm: 9px;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono:    'IBM Plex Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1.25rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* ── Background floating coins ── */
+    .bg-coins {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .coin {
+      position: absolute;
+      font-family: var(--font-mono);
+      color: var(--gold);
+      opacity: 0.07;
+      animation: floatUp linear infinite;
+      user-select: none;
+    }
+    .c1 { left: 5%;  bottom: -60px; font-size: 1.6rem; animation-duration: 14s; }
+    .c2 { left: 20%; bottom: -60px; font-size: 1.2rem; animation-duration: 19s; animation-delay: 3s; }
+    .c3 { left: 50%; bottom: -60px; font-size: 1.0rem; animation-duration: 16s; animation-delay: 6s; }
+    .c4 { left: 70%; bottom: -60px; font-size: 1.4rem; animation-duration: 21s; animation-delay: 1s; }
+    .c5 { left: 88%; bottom: -60px; font-size: 1.1rem; animation-duration: 13s; animation-delay: 8s; }
+
+    @keyframes floatUp {
+      from { transform: translateY(0) rotate(0deg); opacity: 0.07; }
+      10%  { opacity: 0.12; }
+      90%  { opacity: 0.04; }
+      to   { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+    }
+
+    /* ── Decorative corner marks ── */
+    .corner {
+      position: fixed;
+      width: 80px;
+      height: 80px;
+      opacity: 0.12;
+      pointer-events: none;
+    }
+    .corner-tl { top: 20px; left: 20px; border-top: 2px solid var(--gold); border-left: 2px solid var(--gold); border-radius: 4px 0 0 0; }
+    .corner-tr { top: 20px; right: 20px; border-top: 2px solid var(--gold); border-right: 2px solid var(--gold); border-radius: 0 4px 0 0; }
+    .corner-bl { bottom: 20px; left: 20px; border-bottom: 2px solid var(--gold); border-left: 2px solid var(--gold); border-radius: 0 0 0 4px; }
+    .corner-br { bottom: 20px; right: 20px; border-bottom: 2px solid var(--gold); border-right: 2px solid var(--gold); border-radius: 0 0 4px 0; }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1.5px solid var(--border2);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+      box-shadow:
+        0 1px 0 #fff inset,
+        0 8px 40px rgba(44,31,14,0.12),
+        0 2px 8px rgba(44,31,14,0.06);
+      animation: riseIn 0.55s cubic-bezier(0.34, 1.2, 0.64, 1) both;
+    }
+
+    @keyframes riseIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    /* ── Top gold rule ── */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 2rem; right: 2rem;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      border-radius: 0 0 4px 4px;
+    }
+
+    /* ── Logo area ── */
+    .logo-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 2rem;
+      animation: fadeDown 0.5s 0.1s ease both;
+    }
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logo-wrap svg {
+      animation: bob 3s ease-in-out infinite;
+      filter: drop-shadow(0 2px 6px var(--gold-glow));
+    }
+    @keyframes bob {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-4px); }
+    }
+    .logo-name {
+      font-family: var(--font-display);
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--text);
+      letter-spacing: -0.02em;
+      line-height: 1;
+    }
+    .logo-tagline {
+      font-size: 0.72rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 500;
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1.5px solid var(--border2);
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Heading ── */
+    .card-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.3rem;
+      letter-spacing: -0.01em;
+      animation: fadeUp 0.4s 0.15s ease both;
+    }
+    .card-sub {
+      font-size: 0.83rem;
+      color: var(--text3);
+      margin-bottom: 1.75rem;
+      animation: fadeUp 0.4s 0.2s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Fields ── */
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 1rem;
+      animation: fadeUp 0.4s ease both;
+    }
+    .field:nth-child(1) { animation-delay: 0.22s; }
+    .field:nth-child(2) { animation-delay: 0.28s; }
+
+    .lbl {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .inp-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .inp-icon {
+      position: absolute;
+      left: 13px;
+      font-size: 0.95rem;
+      pointer-events: none;
+      opacity: 0.45;
+      line-height: 1;
+    }
+    .inp {
+      background: var(--bg3);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      padding: 11px 14px 11px 38px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      -webkit-appearance: none;
+    }
+    .inp::placeholder { color: var(--text3); }
+    .inp:focus {
+      border-color: var(--gold);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px var(--gold-glow);
+    }
+
+    /* Password toggle */
+    .pw-toggle {
+      position: absolute;
+      right: 12px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      opacity: 0.4;
+      transition: opacity 0.2s;
+      padding: 4px;
+      line-height: 1;
+    }
+    .pw-toggle:hover { opacity: 0.75; }
+
+    /* ── Remember + forgot row ── */
+    .meta-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.4s 0.32s ease both;
+    }
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .remember input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border: 1.5px solid var(--border2);
+      border-radius: 4px;
+      background: var(--bg3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.2s, background 0.2s;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .remember input[type="checkbox"]:checked {
+      background: var(--gold);
+      border-color: var(--gold);
+    }
+    .remember input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 0.65rem;
+      color: #fff;
+      font-weight: 700;
+    }
+    .remember-label {
+      font-size: 0.8rem;
+      color: var(--text2);
+    }
+    .forgot {
+      font-size: 0.8rem;
+      color: var(--gold);
+      text-decoration: none;
+      font-weight: 600;
+      transition: color 0.2s;
+    }
+    .forgot:hover { color: var(--gold2); }
+
+    /* ── Error ── */
+    .err {
+      font-size: 0.78rem;
+      color: var(--red);
+      font-weight: 600;
+      min-height: 18px;
+      margin-bottom: 0.5rem;
+      animation: shake 0.35s ease both;
+    }
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      20%      { transform: translateX(-6px); }
+      40%      { transform: translateX(6px); }
+      60%      { transform: translateX(-4px); }
+      80%      { transform: translateX(4px); }
+    }
+
+    /* ── Submit button ── */
+    .btn-signin {
+      width: 100%;
+      padding: 13px;
+      background: var(--gold);
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 0.97rem;
+      font-weight: 700;
+      border: none;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      letter-spacing: 0.03em;
+      transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+      box-shadow: 0 4px 16px var(--gold-glow), 0 1px 0 rgba(255,255,255,0.15) inset;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      animation: fadeUp 0.4s 0.36s ease both;
+      position: relative;
+      overflow: hidden;
+    }
+    .btn-signin::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+      pointer-events: none;
+    }
+    .btn-signin:hover {
+      background: var(--gold2);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px var(--gold-glow);
+    }
+    .btn-signin:active { transform: scale(0.97); }
+
+    /* Loading spinner state */
+    .btn-signin.loading { pointer-events: none; opacity: 0.85; }
+    .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    .btn-signin.loading .spinner { display: block; }
+    .btn-signin.loading .btn-label { opacity: 0.7; }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Divider with "or" ── */
+    .or-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 1.25rem 0;
+      animation: fadeUp 0.4s 0.38s ease both;
+    }
+    .or-line { flex: 1; height: 1px; background: var(--border2); }
+    .or-text {
+      font-size: 0.72rem;
+      color: var(--text3);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      font-weight: 600;
+    }
+
+    /* ── Social buttons ── */
+    .social-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      animation: fadeUp 0.4s 0.42s ease both;
+    }
+    .btn-social {
+      padding: 10px;
+      background: var(--surface);
+      border: 1.5px solid var(--border2);
+      border-radius: var(--radius-sm);
+      color: var(--text2);
+      font-family: var(--font-body);
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      transition: border-color 0.2s, background 0.2s, transform 0.15s;
+      box-shadow: 0 1px 0 #fff inset;
+    }
+    .btn-social:hover {
+      border-color: var(--gold);
+      background: var(--gold-bg);
+      transform: translateY(-1px);
+    }
+    .btn-social:active { transform: scale(0.97); }
+    .social-icon { font-size: 1rem; }
+
+    /* ── Footer link ── */
+    .signup-row {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: 0.83rem;
+      color: var(--text3);
+      animation: fadeUp 0.4s 0.46s ease both;
+    }
+    .signup-row a {
+      color: var(--gold);
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .signup-row a:hover { color: var(--gold2); }
+
+    /* ── Success state ── */
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 1rem 0 0.5rem;
+      animation: stampIn 0.5s cubic-bezier(0.34,1.3,0.64,1) both;
+    }
+    @keyframes stampIn {
+      0%   { opacity: 0; transform: scale(1.2) rotate(-3deg); }
+      60%  { transform: scale(0.97) rotate(1deg); }
+      100% { opacity: 1; transform: scale(1) rotate(0deg); }
+    }
+    .success-msg .check { font-size: 2.5rem; margin-bottom: 0.5rem; display: block; }
+    .success-msg strong { font-family: var(--font-display); font-size: 1.1rem; color: var(--green2); display: block; margin-bottom: 0.25rem; }
+    .success-msg p { font-size: 0.82rem; color: var(--text3); }
+  </style>
+</head>
+<body>
+
+  <!-- Floating background coins -->
+  <div class="bg-coins" aria-hidden="true">
+    <span class="coin c1">₱</span>
+    <span class="coin c2">₱</span>
+    <span class="coin c3">₱</span>
+    <span class="coin c4">₱</span>
+    <span class="coin c5">₱</span>
+  </div>
+
+  <!-- Decorative corner brackets -->
+  <div class="corner corner-tl" aria-hidden="true"></div>
+  <div class="corner corner-tr" aria-hidden="true"></div>
+  <div class="corner corner-bl" aria-hidden="true"></div>
+  <div class="corner corner-br" aria-hidden="true"></div>
+
+  <!-- Sign-in card -->
+  <div class="card">
+
+    <!-- Logo -->
+    <div class="logo-area">
+      <div class="logo-wrap">
+        <svg width="34" height="38" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="7" y="1" width="24" height="9" rx="3" fill="#c8860a"/>
+          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#fff8f0"/>
+          <rect x="3" y="10" width="32" height="31" rx="9" fill="#faf7f2" stroke="#c8860a" stroke-width="1.5"/>
+          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#c8860a15"/>
+          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#c8860a" opacity="0.8">₱</text>
+        </svg>
+        <span class="logo-name">TigilGastos</span>
+      </div>
+      <span class="logo-tagline">Locked savings for students</span>
+    </div>
+
+    <hr class="divider"/>
+
+    <!-- Form area -->
+    <div id="form-area">
+      <h2 class="card-title">Welcome back</h2>
+      <p class="card-sub">Sign in to your savings jar.</p>
+
+      <div class="field">
+        <label class="lbl" for="email">Email</label>
+        <div class="inp-wrap">
+          <span class="inp-icon">✉️</span>
+          <input class="inp" type="email" id="email" placeholder="you@school.edu.ph" autocomplete="email"/>
+        </div>
+      </div>
+
+      <div class="field">
+        <label class="lbl" for="password">Password</label>
+        <div class="inp-wrap">
+          <span class="inp-icon">🔑</span>
+          <input class="inp" type="password" id="password" placeholder="••••••••" autocomplete="current-password"/>
+          <button class="pw-toggle" id="pw-toggle" type="button" aria-label="Toggle password visibility">👁</button>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <label class="remember">
+          <input type="checkbox" id="remember"/>
+          <span class="remember-label">Remember me</span>
+        </label>
+        <a href="#" class="forgot">Forgot password?</a>
+      </div>
+
+      <p class="err" id="err-msg"></p>
+
+      <button class="btn-signin" id="signin-btn" type="button">
+        <div class="spinner"></div>
+        <span class="btn-label">Sign In</span>
+      </button>
+
+      <div class="or-row">
+        <span class="or-line"></span>
+        <span class="or-text">or</span>
+        <span class="or-line"></span>
+      </div>
+
+      <div class="social-row">
+        <button class="btn-social" type="button">
+          <span class="social-icon">🌐</span> Google
+        </button>
+        <button class="btn-social" type="button">
+          <span class="social-icon">📘</span> Facebook
+        </button>
+      </div>
+
+      <p class="signup-row">
+        No account yet? <a href="#">Create one free</a>
+      </p>
+    </div>
+
+    <!-- Success state (shown after login) -->
+    <div class="success-msg" id="success-msg">
+      <span class="check">🎉</span>
+      <strong>Signed in!</strong>
+      <p>Redirecting to your savings jar…</p>
+    </div>
+
+  </div>
+
+  <script>
+    const emailInp  = document.getElementById('email');
+    const pwInp     = document.getElementById('password');
+    const pwToggle  = document.getElementById('pw-toggle');
+    const signinBtn = document.getElementById('signin-btn');
+    const errMsg    = document.getElementById('err-msg');
+    const formArea  = document.getElementById('form-area');
+    const successEl = document.getElementById('success-msg');
+
+    /* ── Password visibility toggle ── */
+    pwToggle.addEventListener('click', () => {
+      const show = pwInp.type === 'password';
+      pwInp.type = show ? 'text' : 'password';
+      pwToggle.textContent = show ? '🙈' : '👁';
+    });
+
+    /* ── Sign-in handler ── */
+    signinBtn.addEventListener('click', handleSignIn);
+    [emailInp, pwInp].forEach(el =>
+      el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignIn(); })
+    );
+
+    function handleSignIn() {
+      errMsg.textContent = '';
+      errMsg.style.animation = 'none';
+
+      const email = emailInp.value.trim();
+      const pw    = pwInp.value;
+
+      /* Basic validation */
+      if (!email) {
+        showErr('Please enter your email address.');
+        emailInp.focus();
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showErr('That doesn\'t look like a valid email.');
+        emailInp.focus();
+        return;
+      }
+      if (!pw) {
+        showErr('Please enter your password.');
+        pwInp.focus();
+        return;
+      }
+      if (pw.length < 6) {
+        showErr('Password must be at least 6 characters.');
+        pwInp.focus();
+        return;
+      }
+
+      /* Simulate loading → success */
+      signinBtn.classList.add('loading');
+      signinBtn.querySelector('.btn-label').textContent = 'Signing in…';
+
+      setTimeout(() => {
+        /* Save user session */
+        localStorage.setItem('tg_user', JSON.stringify({ email: email }));
+
+        signinBtn.classList.remove('loading');
+        formArea.style.display = 'none';
+        successEl.style.display = 'block';
+
+        /* Redirect after 1.5s */
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1500);
+      }, 1400);
+    }
+
+    function showErr(msg) {
+      errMsg.textContent = msg;
+      void errMsg.offsetWidth; /* reflow for re-animation */
+      errMsg.style.animation = 'shake 0.35s ease both';
+    }
+  </script>
+</body>
+</html>

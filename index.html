@@ -6,7 +6,7 @@
   <title>TigilGastos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
@@ -27,20 +27,31 @@
         <!-- Clean SVG jar logo -->
         <svg class="wordmark-logo" width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <!-- Lid -->
-          <rect x="7" y="1" width="24" height="9" rx="3" fill="#f5c542"/>
+          <rect x="7" y="1" width="24" height="9" rx="3" fill="#c8860a"/>
           <!-- Coin slot -->
-          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#1a1200"/>
+          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#fff8f0"/>
           <!-- Jar body -->
-          <rect x="3" y="10" width="32" height="31" rx="9" fill="#1e1e32" stroke="#f5c542" stroke-width="1.5"/>
+          <rect x="3" y="10" width="32" height="31" rx="9" fill="#faf7f2" stroke="#c8860a" stroke-width="1.5"/>
           <!-- Left shine strip -->
-          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#ffffff0d"/>
+          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#c8860a15"/>
           <!-- Peso sign -->
-          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#f5c542" opacity="0.65">₱</text>
+          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#c8860a" opacity="0.8">₱</text>
         </svg>
         <div>
           <h1 class="wordmark-title">TigilGastos</h1>
           <p class="wordmark-sub">Locked savings for students</p>
         </div>
+      </div>
+      <div class="header-actions">
+        <span class="user-email" id="user-email"></span>
+        <button class="btn-signout" id="signout-btn" title="Sign out">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+          Sign Out
+        </button>
       </div>
     </header>
 
@@ -114,21 +125,28 @@
         </div>
 
         <p class="err" id="setup-err"></p>
-        <button class="btn-main" id="create-btn">
-          <span>🔒</span> Create My Jar
-        </button>
+        <button class="btn-main" id="create-btn">Create My Jar</button>
       </div>
     </section>
 
     <!-- TRACKER SCREEN -->
     <section id="tracker-screen" class="screen hidden">
 
+      <div class="tracker-topbar">
+        <button class="btn-back" id="back-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="15 18 9 12 15 6"/>
+          </svg>
+          Back
+        </button>
+      </div>
+
       <div class="jar-hero">
         <div class="jar-meta">
           <h2 class="jar-goal-name" id="disp-name">Tuition Fund</h2>
           <div class="jar-badges">
             <span class="chip chip-date" id="disp-date"></span>
-            <span class="chip" id="lock-chip">Unlocked 🔓</span>
+            <span class="chip" id="lock-chip">Unlocked</span>
           </div>
         </div>
 
@@ -176,7 +194,6 @@
       <div class="action-row">
         <div class="act-card">
           <div class="act-card-top">
-            <span class="act-icon">💰</span>
             <h3>Drop Coins</h3>
           </div>
           <div class="inp-prefix-wrap">
@@ -184,18 +201,17 @@
             <input class="inp inp-prefixed inp-dark" type="number" id="deposit-amt" placeholder="500" min="1"/>
           </div>
           <p class="err" id="dep-err"></p>
-          <button class="btn-action btn-gold" id="deposit-btn">+ Add to Jar</button>
+          <button class="btn-action btn-gold" id="deposit-btn">Add to Jar</button>
         </div>
 
         <div class="act-card">
           <div class="act-card-top">
-            <span class="act-icon" id="lock-icon">🔒</span>
             <h3 id="lock-card-title">Lock Controls</h3>
           </div>
           <p class="act-desc" id="lock-desc">Activate the lock to guard your savings from yourself.</p>
           <p class="err" id="lock-err"></p>
-          <button class="btn-action btn-purple" id="lock-btn">🔒 Lock Jar</button>
-          <button class="btn-action btn-green hidden" id="withdraw-btn">💸 Withdraw</button>
+          <button class="btn-action btn-purple" id="lock-btn">Lock Jar</button>
+          <button class="btn-action btn-green hidden" id="withdraw-btn">Withdraw</button>
         </div>
       </div>
 
@@ -221,7 +237,11 @@
     </section>
 
     <div class="success-banner hidden" id="success-banner">
-      <span class="success-icon">🎉</span>
+      <div class="success-icon-wrap">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green)">
+          <polyline points="20 6 9 17 4 12"/>
+        </svg>
+      </div>
       <div>
         <strong>Goal Reached!</strong>
         <p>You saved your full target. Your jar is now open for withdrawal.</p>
@@ -231,7 +251,31 @@
   </div>
 
   <script>
-    /* Toggle custom goal input based on dropdown */
+    /* ── Auth guard ── */
+    const tgUser = localStorage.getItem('tg_user');
+    if (!tgUser) { window.location.replace('signin.html'); }
+    else {
+      try {
+        const u = JSON.parse(tgUser);
+        const el = document.getElementById('user-email');
+        if (el && u.email) el.textContent = u.email;
+      } catch {}
+    }
+
+    /* ── Sign out ── */
+    document.getElementById('signout-btn').addEventListener('click', () => {
+      localStorage.removeItem('tg_user');
+      window.location.href = 'signin.html';
+    });
+
+    /* ── Back button — returns to setup screen ── */
+    document.getElementById('back-btn').addEventListener('click', () => {
+      document.getElementById('tracker-screen').classList.add('hidden');
+      document.getElementById('setup-screen').classList.remove('hidden');
+      document.getElementById('success-banner').classList.add('hidden');
+    });
+
+    /* ── Dropdown toggle ── */
     const categorySelect = document.getElementById('goal-category');
     const customField    = document.getElementById('custom-goal-field');
     const goalNameInput  = document.getElementById('goal-name');

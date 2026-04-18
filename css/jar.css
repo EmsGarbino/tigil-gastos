@@ -1,7 +1,7 @@
 /* ── SETUP HERO ──────────────────────────────────────────── */
 .setup-hero {
   text-align: center;
-  padding: 2rem 0 2.5rem;
+  padding: 2.5rem 0 2rem;
 }
 .setup-jar-anim {
   display: flex;
@@ -11,22 +11,25 @@
 .anim-jar {
   width: 72px;
   height: 80px;
-  background: var(--surface2);
+  background: var(--surface);
   border: 2px solid var(--border2);
   border-radius: 10px 10px 18px 18px;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 4px 16px rgba(44,31,14,0.1);
 }
 .setup-title {
   font-family: var(--font-display);
-  font-size: 1.8rem;
+  font-size: 2rem;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 0.5rem;
+  letter-spacing: -0.02em;
 }
 .setup-desc {
-  font-size: 0.95rem;
+  font-size: 0.93rem;
   color: var(--text2);
+  line-height: 1.6;
 }
 
 /* ── JAR HERO ────────────────────────────────────────────── */
@@ -35,15 +38,16 @@
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
-  padding: 1rem 0 0.5rem;
+  padding: 1.25rem 0 0.5rem;
 }
 .jar-meta { text-align: center; }
 .jar-goal-name {
   font-family: var(--font-display);
-  font-size: 1.7rem;
+  font-size: 1.8rem;
   font-weight: 700;
   color: var(--text);
   margin-bottom: 8px;
+  letter-spacing: -0.02em;
 }
 .jar-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
 
@@ -55,12 +59,12 @@
   flex-direction: column;
   align-items: center;
   width: 140px;
-  filter: drop-shadow(0 12px 32px rgba(0,0,0,0.5));
+  filter: drop-shadow(0 8px 24px rgba(44,31,14,0.18));
 }
 .jar-lid {
   width: 110px;
   height: 28px;
-  background: var(--surface2);
+  background: var(--bg2);
   border: 2px solid var(--border2);
   border-radius: 8px 8px 0 0;
   display: flex;
@@ -72,64 +76,60 @@
 .jar-slot {
   width: 30px;
   height: 6px;
-  background: var(--bg);
+  background: var(--bg3);
   border-radius: 3px;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15);
   transition: box-shadow 0.3s;
 }
 .jar-slot.glowing {
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.6), 0 0 8px var(--gold), 0 0 20px var(--gold-glow);
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.15),
+              0 0 8px var(--gold), 0 0 20px var(--gold-glow);
 }
 .jar-vessel {
   width: 140px;
   height: 190px;
-  background: var(--bg3);
+  background: var(--surface);
   border: 2px solid var(--border2);
   border-top: none;
   border-radius: 4px 4px 30px 30px;
   position: relative;
   overflow: hidden;
-  transition: border-color 0.4s;
+  transition: border-color 0.4s, box-shadow 0.4s;
 }
-.jar-vessel.locked { border-color: var(--purple); box-shadow: 0 0 20px var(--purple-glow); }
-.jar-vessel.completed { border-color: var(--gold); box-shadow: 0 0 20px var(--gold-glow); }
+.jar-vessel.locked   { border-color: var(--purple); box-shadow: 0 0 18px var(--purple-glow); }
+.jar-vessel.completed { border-color: var(--green);  box-shadow: 0 0 18px var(--green-glow); }
 
 /* ── JAR FILL ────────────────────────────────────────────── */
 .jar-fill {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
   height: 0%;
-  background: linear-gradient(180deg, #fbbf24, #d97706);
+  background: linear-gradient(180deg, var(--gold-light), var(--gold));
   transition: height 0.8s cubic-bezier(0.34, 1.3, 0.64, 1);
   border-radius: 0 0 28px 28px;
 }
-.jar-fill.locked { background: linear-gradient(180deg, #a78bfa, #7c3aed); }
-.jar-fill.completed { background: linear-gradient(180deg, #4ade80, #16a34a); }
+.jar-fill.locked    { background: linear-gradient(180deg, #8b9de8, var(--purple)); }
+.jar-fill.completed { background: linear-gradient(180deg, #6dbf90, var(--green)); }
 
 .jar-wave {
   position: absolute;
-  top: -8px;
-  left: -20px;
-  right: -20px;
+  top: -8px; left: -20px; right: -20px;
   height: 18px;
   background: inherit;
   border-radius: 50%;
   animation: waveAnim 2.2s ease-in-out infinite;
-  opacity: 0.7;
+  opacity: 0.6;
 }
 
 .jar-pct {
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 50%; left: 50%;
   transform: translate(-50%, -50%);
   font-family: var(--font-mono);
-  font-size: 1.6rem;
+  font-size: 1.5rem;
   font-weight: 500;
-  color: #fff;
-  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+  color: var(--text);
+  text-shadow: 0 1px 3px rgba(255,255,255,0.6);
   z-index: 3;
   pointer-events: none;
   transition: color 0.3s;
@@ -137,11 +137,9 @@
 
 .jar-shine {
   position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 18px;
-  bottom: 20px;
-  background: linear-gradient(180deg, #ffffff12, transparent);
+  top: 10px; left: 10px;
+  width: 16px; bottom: 20px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.25), transparent);
   border-radius: 10px;
   pointer-events: none;
 }
@@ -149,8 +147,7 @@
 /* ── COIN DROP ───────────────────────────────────────────── */
 .coin-drop-wrap {
   position: absolute;
-  top: 0;
-  left: 50%;
+  top: 0; left: 50%;
   transform: translateX(-50%);
   pointer-events: none;
 }
@@ -158,11 +155,10 @@
   font-family: var(--font-mono);
   font-size: 1.4rem;
   color: var(--gold);
-  filter: drop-shadow(0 0 8px var(--gold));
+  filter: drop-shadow(0 0 6px var(--gold-glow));
   opacity: 0;
   position: absolute;
-  top: -30px;
-  left: -12px;
+  top: -30px; left: -12px;
   animation: none;
 }
 .coin-drop.dropping {

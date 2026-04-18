@@ -183,13 +183,13 @@ function render() {
   } else if (state.isLocked) {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent = '🔓 Unlock Jar';
+    lockBtn.textContent = 'Unlock Jar';
     lockBtn.className = 'btn-action btn-purple';
     lockDesc.textContent = 'Jar is locked. Withdrawal blocked until goal or date is reached.';
   } else {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent = '🔒 Lock Jar';
+    lockBtn.textContent = 'Lock Jar';
     lockBtn.className = 'btn-action btn-purple';
     lockDesc.textContent = 'Activate the lock to guard your savings from yourself.';
   }
