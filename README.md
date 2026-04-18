@@ -48,5 +48,3 @@ All contract logic, user interactions, and transactions are publicly verifiable 
 ![On-Chain Proof](https://github.com/user-attachments/assets/317e6ad7-81e4-4856-bdb0-8006b296b0f6)
 
 ---
-
-This project is licensed under the MIT License.
