@@ -45,6 +45,8 @@ The user sets a savings goal and target date, which creates a smart contract sto
 
 All contract logic, user interactions, and transactions are publicly verifiable on the Stellar ledger.
 
+https://stellar.expert/explorer/testnet/contract/CCWF5BAC64WL66V5UVSDUVB6LEQKYBBW35E7WF45Q5WTIXMSJXCSKL7E
+
 ![On-Chain Proof](https://github.com/user-attachments/assets/317e6ad7-81e4-4856-bdb0-8006b296b0f6)
 
 ---
