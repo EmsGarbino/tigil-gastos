@@ -52,9 +52,20 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><polyline points="3 16 3 11 8 11"/></svg>
           History
         </button>
+        <button class="nav-item" data-screen="profile">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+          Profile
+        </button>
       </nav>
 
       <div class="sidebar-footer">
+        <div class="sidebar-user">
+          <div class="sidebar-user-avatar" id="sidebar-avatar">?</div>
+          <div class="sidebar-user-info">
+            <div class="sidebar-user-name" id="sidebar-name">—</div>
+            <div class="sidebar-user-email" id="sidebar-email">—</div>
+          </div>
+        </div>
         <button class="btn-signout" id="signout-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -249,15 +260,23 @@
                 <button class="btn-action btn-green hidden" id="withdraw-btn">Withdraw</button>
               </div>
             </div>
+          </div>
+        </div>
 
-            <div class="log-panel">
-              <div class="log-header">
-                <span class="log-dot"></span>
-                <span class="log-title">Smart Contract Log</span>
-                <span class="log-badge">Soroban</span>
-              </div>
-              <ul class="log-list" id="log-list"></ul>
+        <div class="tracker-row2">
+          <div class="hist-panel">
+            <h3 class="hist-title">Transaction History</h3>
+            <div class="hist-body" id="hist-body">
+              <p class="hist-empty">No transactions yet.</p>
             </div>
+          </div>
+          <div class="log-panel">
+            <div class="log-header">
+              <span class="log-dot"></span>
+              <span class="log-title">Smart Contract Log</span>
+              <span class="log-badge">Soroban</span>
+            </div>
+            <ul class="log-list" id="log-list"></ul>
           </div>
         </div>
 
@@ -277,16 +296,69 @@
             <span class="select-arrow">▾</span>
           </div>
         </div>
-
         <p class="hist-empty hidden" id="history-empty" style="text-align:left; padding:3rem 0; font-size:0.95rem;">
           No transactions yet. Start depositing into a jar!
         </p>
-
         <div class="glass-card" id="history-table-wrap">
-          <div class="hist-row hist-head">
+          <div class="hist-row hist-head" style="grid-template-columns:0.8fr 1.4fr 1fr 1fr 1fr;">
             <span>Date</span><span>Goal</span><span>Action</span><span>Amount</span><span>Balance</span>
           </div>
           <div id="history-rows"></div>
+        </div>
+      </section>
+
+      <!-- ══ PROFILE SCREEN ══ -->
+      <section id="profile-screen" class="screen hidden">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Profile</h2>
+            <p class="page-desc">Manage your account details and preferences.</p>
+          </div>
+        </div>
+
+        <div class="profile-grid">
+
+          <!-- Account info card -->
+          <div class="glass-card profile-card">
+            <div class="profile-avatar" id="profile-avatar">?</div>
+            <div class="profile-info">
+              <div class="profile-name" id="profile-display-name">—</div>
+              <div class="profile-email" id="profile-display-email">—</div>
+            </div>
+
+            <hr class="profile-divider"/>
+
+            <div class="field">
+              <label class="lbl">Display Name</label>
+              <input class="inp" type="text" id="profile-name-inp" placeholder="e.g., Juan dela Cruz" maxlength="40"/>
+            </div>
+            <div class="field">
+              <label class="lbl">Email</label>
+              <input class="inp" type="email" id="profile-email-inp" placeholder="you@school.edu.ph" disabled/>
+            </div>
+            <div class="field">
+              <label class="lbl">School / University</label>
+              <input class="inp" type="text" id="profile-school-inp" placeholder="e.g., University of the Philippines" maxlength="60"/>
+            </div>
+            <p class="err" id="profile-err"></p>
+            <p class="profile-success hidden" id="profile-success">Profile saved!</p>
+            <button class="btn-main" id="profile-save-btn">Save Changes</button>
+          </div>
+
+          <!-- Stats summary card -->
+          <div class="profile-side">
+            <div class="glass-card profile-stats-card">
+              <h3 class="profile-section-title">Savings Summary</h3>
+              <div class="profile-stat-list" id="profile-stat-list"></div>
+            </div>
+
+            <div class="glass-card profile-danger-card">
+              <h3 class="profile-section-title" style="color:var(--red);">Danger Zone</h3>
+              <p class="profile-danger-desc">This will permanently delete all your goals and transactions. This action cannot be undone.</p>
+              <button class="btn-ghost btn-ghost-danger profile-danger-btn" id="clear-all-btn">Clear All Data</button>
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -299,11 +371,31 @@
     if (!tgUser) { window.location.replace('signin.html'); }
     else {
       try {
-        const u = JSON.parse(tgUser);
-        const el = document.getElementById('topbar-user');
-        if (el && u.email) el.textContent = u.email;
+        const u     = JSON.parse(tgUser);
+        const prefs = JSON.parse(localStorage.getItem('tg_profile') || '{}');
+        const name  = prefs.name || '';
+        const email = u.email || '';
+
+        // Topbar
+        const topbarEl = document.getElementById('topbar-user');
+        if (topbarEl) topbarEl.textContent = name || email;
+
+        // Sidebar user card
+        updateSidebarUser(name, email);
       } catch {}
     }
+
+    function updateSidebarUser(name, email) {
+      const display  = name || email || '?';
+      const initials = display.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+      const avatarEl = document.getElementById('sidebar-avatar');
+      const nameEl   = document.getElementById('sidebar-name');
+      const emailEl  = document.getElementById('sidebar-email');
+      if (avatarEl) avatarEl.textContent = initials;
+      if (nameEl)   nameEl.textContent   = name  || 'No name set';
+      if (emailEl)  emailEl.textContent  = email || '';
+    }
+    window.updateSidebarUser = updateSidebarUser;
 
     document.getElementById('signout-btn').addEventListener('click', () => {
       localStorage.removeItem('tg_user');

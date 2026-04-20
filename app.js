@@ -5,8 +5,8 @@
 const STORE_KEY = 'tigilgastos_v3';
 
 // ── STATE ────────────────────────────────────────────────────
-let goals      = [];
-let activeId   = null;
+let goals      = [];       // array of goal objects
+let activeId   = null;     // id of currently viewed goal
 
 function newGoal(name, amount, date) {
   return {
@@ -127,31 +127,37 @@ const withdrawBtn= $('withdraw-btn');
 const lockErr    = $('lock-err');
 const lockDesc   = $('lock-desc');
 const logList    = $('log-list');
+const histBody   = $('hist-body');
 const resetBtn   = $('reset-btn');
 
 // ── SCREEN SWITCHING ──────────────────────────────────────────
 window.showScreen = showScreen;
 function showScreen(name) {
-  ['setup', 'dashboard', 'tracker', 'history'].forEach(s => {
-    $(`${s}-screen`).classList.toggle('hidden', s !== name);
+  ['setup', 'dashboard', 'tracker', 'history', 'profile'].forEach(s => {
+    const el = $(`${s}-screen`);
+    if (el) el.classList.toggle('hidden', s !== name);
   });
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.screen === name);
   });
-  const titles = { setup: 'New Goal', dashboard: 'My Goals', tracker: 'Jar Detail', history: 'History' };
+  const titles = { setup: 'New Goal', dashboard: 'My Goals', tracker: 'Jar Detail', history: 'History', profile: 'Profile' };
   $('topbar-title').textContent = titles[name] || '';
 
+  // Show "Viewing Jar" nav only when tracker is active
   const navTracker = $('nav-tracker');
   if (navTracker) navTracker.classList.toggle('hidden', name !== 'tracker');
 }
 
 // ── RENDER: DASHBOARD ─────────────────────────────────────────
 function renderDashboard() {
-  const grid  = $('goals-grid');
+  const grid = $('goals-grid');
   const empty = $('goals-empty');
   grid.innerHTML = '';
 
-  if (!goals.length) { empty.classList.remove('hidden'); return; }
+  if (!goals.length) {
+    empty.classList.remove('hidden');
+    return;
+  }
   empty.classList.add('hidden');
 
   goals.forEach(g => {
@@ -195,9 +201,11 @@ function renderTracker() {
     dispDate.style.display = 'none';
   }
 
+  // Chip
   lockChip.textContent = statusLabel(g);
   lockChip.className   = 'chip ' + statusClass(g);
 
+  // Jar
   const p = pct(g.totalSaved, g.goalAmount);
   jarFill.style.height = p + '%';
   jarPct.textContent   = p + '%';
@@ -205,15 +213,18 @@ function renderTracker() {
   if (jarVessel) jarVessel.className = 'jar-vessel' + (g.isLocked ? ' locked' : '') + (g.isCompleted ? ' completed' : '');
   if (jarSlot)   jarSlot.className   = 'jar-slot'   + (g.isLocked ? ' glowing' : '');
 
+  // Progress
   progFill.style.width = p + '%';
   progFill.className   = 'prog-fill' + (g.isLocked ? ' locked' : '') + (g.isCompleted ? ' completed' : '');
 
+  // Stats
   const remaining = Math.max(0, g.goalAmount - g.totalSaved);
   statSaved.textContent = '₱' + fmt(g.totalSaved);
   statGoal.textContent  = '₱' + fmt(g.goalAmount);
   statLeft.textContent  = '₱' + fmt(remaining);
   statSaved.className   = 'stat-n' + (g.totalSaved > 0 ? ' gold' : '');
 
+  // Buttons
   if (g.isCompleted) {
     lockBtn.classList.add('hidden');
     withdrawBtn.classList.remove('hidden');
@@ -222,20 +233,21 @@ function renderTracker() {
   } else if (g.isLocked) {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent  = 'Unlock Jar';
-    lockBtn.className    = 'btn-action btn-purple';
+    lockBtn.textContent = 'Unlock Jar';
+    lockBtn.className   = 'btn-action btn-purple';
     lockDesc.textContent = 'Jar is locked. Withdrawal blocked until goal or date is reached.';
   } else {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent  = 'Lock Jar';
-    lockBtn.className    = 'btn-action btn-purple';
+    lockBtn.textContent = 'Lock Jar';
+    lockBtn.className   = 'btn-action btn-purple';
     lockDesc.textContent = 'Activate the lock to guard your savings from yourself.';
   }
 
   $('success-banner').classList.toggle('hidden', !g.isCompleted);
 
   renderLog(g);
+  renderGoalHistory(g);
 }
 
 function renderLog(g) {
@@ -248,12 +260,35 @@ function renderLog(g) {
   });
 }
 
-// ── RENDER: HISTORY SCREEN ────────────────────────────────────
+function renderGoalHistory(g) {
+  histBody.innerHTML = '';
+  if (!g.transactions.length) {
+    histBody.innerHTML = '<p class="hist-empty">No transactions yet.</p>';
+    return;
+  }
+  const head = document.createElement('div');
+  head.className = 'hist-row hist-head';
+  head.innerHTML = '<span>Date</span><span>Action</span><span>Amount</span><span>Balance</span>';
+  histBody.appendChild(head);
+  g.transactions.slice().reverse().forEach(tx => {
+    const row = document.createElement('div');
+    row.className = 'hist-row';
+    const dep = tx.action === 'Deposit';
+    row.innerHTML = `
+      <span class="hist-date">${tx.date}</span>
+      <span class="hist-action">${tx.action}</span>
+      <span class="${dep ? 'hist-amt-dep' : 'hist-amt-wit'}">${dep ? '+' : '-'}₱${fmt(tx.amount)}</span>
+      <span class="hist-balance">₱${fmt(tx.balance)}</span>`;
+    histBody.appendChild(row);
+  });
+}
+
 function renderHistory() {
-  const filterEl  = $('history-filter');
-  const rowsEl    = $('history-rows');
-  const emptyEl   = $('history-empty');
-  const tableWrap = $('history-table-wrap');
+  const filterEl  = document.getElementById('history-filter');
+  const rowsEl    = document.getElementById('history-rows');
+  const emptyEl   = document.getElementById('history-empty');
+  const tableWrap = document.getElementById('history-table-wrap');
+  if (!filterEl || !rowsEl) return;
 
   // Rebuild filter dropdown
   const selectedVal = filterEl.value || 'all';
@@ -266,7 +301,6 @@ function renderHistory() {
     filterEl.appendChild(opt);
   });
 
-  // Collect all transactions with goal name attached
   const filterGoalId = filterEl.value;
   let allTx = [];
   goals.forEach(g => {
@@ -276,33 +310,111 @@ function renderHistory() {
     });
   });
 
-  // Sort newest first
-  allTx.sort((a, b) => b._ts - a._ts);
-
   rowsEl.innerHTML = '';
 
   if (!allTx.length) {
-    emptyEl.classList.remove('hidden');
-    tableWrap.classList.add('hidden');
+    if (emptyEl)   emptyEl.classList.remove('hidden');
+    if (tableWrap) tableWrap.classList.add('hidden');
     return;
   }
+  if (emptyEl)   emptyEl.classList.add('hidden');
+  if (tableWrap) tableWrap.classList.remove('hidden');
 
-  emptyEl.classList.add('hidden');
-  tableWrap.classList.remove('hidden');
-
-  allTx.forEach(tx => {
+  allTx.reverse().forEach(tx => {
     const row = document.createElement('div');
-    row.className = 'hist-row hist-row-history';
+    row.className = 'hist-row';
+    row.style.gridTemplateColumns = '0.8fr 1.4fr 1fr 1fr 1fr';
     const dep = tx.action === 'Deposit';
     row.innerHTML = `
       <span class="hist-date">${tx.date}</span>
       <span class="hist-goal-name">${tx.goalName}</span>
       <span class="hist-action">${tx.action}</span>
       <span class="${dep ? 'hist-amt-dep' : 'hist-amt-wit'}">${dep ? '+' : '-'}₱${fmt(tx.amount)}</span>
-      <span class="hist-balance">₱${fmt(tx.balance)}</span>
-    `;
+      <span class="hist-balance">₱${fmt(tx.balance)}</span>`;
     rowsEl.appendChild(row);
   });
+}
+
+
+// ── RENDER: PROFILE ───────────────────────────────────────────
+function renderProfile() {
+  const user = (() => { try { return JSON.parse(localStorage.getItem('tg_user')) || {}; } catch { return {}; } })();
+  const prefs = (() => { try { return JSON.parse(localStorage.getItem('tg_profile')) || {}; } catch { return {}; } })();
+
+  // Avatar initials
+  const name  = prefs.name  || user.email || '?';
+  const email = user.email  || '—';
+  const initials = name.trim().split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
+  const avatarEl = $('profile-avatar');
+  if (avatarEl) avatarEl.textContent = initials;
+
+  const dispName  = $('profile-display-name');
+  const dispEmail = $('profile-display-email');
+  if (dispName)  dispName.textContent  = prefs.name   || 'No name set';
+  if (dispEmail) dispEmail.textContent = email;
+
+  // Pre-fill inputs
+  const nameInp   = $('profile-name-inp');
+  const emailInp  = $('profile-email-inp');
+  const schoolInp = $('profile-school-inp');
+  if (nameInp)   nameInp.value   = prefs.name   || '';
+  if (emailInp)  emailInp.value  = email;
+  if (schoolInp) schoolInp.value = prefs.school || '';
+
+  // Stats summary
+  const statList = $('profile-stat-list');
+  if (statList) {
+    const totalGoals     = goals.length;
+    const activeGoals    = goals.filter(g => !g.isCompleted && !g.isLocked).length;
+    const completedGoals = goals.filter(g => g.isCompleted).length;
+    const lockedGoals    = goals.filter(g => g.isLocked && !g.isCompleted).length;
+    const totalSaved     = goals.reduce((s, g) => s + g.totalSaved, 0);
+    const totalTarget    = goals.reduce((s, g) => s + g.goalAmount, 0);
+
+    statList.innerHTML = `
+      <div class="profile-stat-row"><span>Total Jars</span><span class="profile-stat-val">${totalGoals}</span></div>
+      <div class="profile-stat-row"><span>Active</span><span class="profile-stat-val">${activeGoals}</span></div>
+      <div class="profile-stat-row"><span>Locked</span><span class="profile-stat-val">${lockedGoals}</span></div>
+      <div class="profile-stat-row"><span>Completed</span><span class="profile-stat-val">${completedGoals}</span></div>
+      <div class="profile-stat-row"><span>Total Saved</span><span class="profile-stat-val" style="color:var(--gold);">₱${fmt(totalSaved)}</span></div>
+      <div class="profile-stat-row"><span>Total Target</span><span class="profile-stat-val">₱${fmt(totalTarget)}</span></div>
+    `;
+  }
+
+  // Hide success message
+  const successEl = $('profile-success');
+  if (successEl) successEl.classList.add('hidden');
+}
+
+function saveProfile() {
+  const nameInp   = $('profile-name-inp');
+  const schoolInp = $('profile-school-inp');
+  const errEl     = $('profile-err');
+  const successEl = $('profile-success');
+
+  errEl.textContent = '';
+  const name   = nameInp?.value.trim()   || '';
+  const school = schoolInp?.value.trim() || '';
+
+  if (!name) { errEl.textContent = 'Please enter your display name.'; return; }
+
+  const prefs = { name, school };
+  localStorage.setItem('tg_profile', JSON.stringify(prefs));
+
+  // Update topbar
+  const topbarUser = $('topbar-user');
+  if (topbarUser) topbarUser.textContent = name;
+
+  // Update sidebar user card
+  const user = (() => { try { return JSON.parse(localStorage.getItem('tg_user')) || {}; } catch { return {}; } })();
+  if (typeof window.updateSidebarUser === 'function') {
+    window.updateSidebarUser(name, user.email || '');
+  }
+
+  successEl.classList.remove('hidden');
+  setTimeout(() => successEl.classList.add('hidden'), 2500);
+
+  renderProfile();
 }
 
 // ── COIN DROP ─────────────────────────────────────────────────
@@ -340,6 +452,7 @@ function createGoal() {
   goals.push(g);
   activeId = g.id;
 
+  // Reset form
   if (goalCategoryInp) goalCategoryInp.value = '';
   if (goalNameInp)     goalNameInp.value = '';
   if (customGoalField) customGoalField.classList.add('hidden');
@@ -408,7 +521,7 @@ function deleteGoal() {
   const g = getActive();
   if (!g) return;
   if (!confirm(`Delete "${g.goalName}"? This cannot be undone.`)) return;
-  goals    = goals.filter(x => x.id !== g.id);
+  goals = goals.filter(x => x.id !== g.id);
   activeId = null;
   save();
   showScreen('dashboard');
@@ -423,11 +536,22 @@ withdrawBtn.addEventListener('click', withdraw);
 depositAmt.addEventListener('keydown', e => { if (e.key === 'Enter') deposit(); });
 goalAmtInp.addEventListener('keydown', e => { if (e.key === 'Enter') createGoal(); });
 
-resetBtn.addEventListener('click', () => showScreen('setup'));
-$('delete-goal-btn')?.addEventListener('click', deleteGoal);
+resetBtn.addEventListener('click', () => {
+  // "Start New Goal" from tracker → go to setup screen
+  showScreen('setup');
+});
 
-// History filter change
+$('delete-goal-btn')?.addEventListener('click', deleteGoal);
+$('profile-save-btn')?.addEventListener('click', saveProfile);
+$('profile-name-inp')?.addEventListener('keydown', e => { if (e.key === 'Enter') saveProfile(); });
 $('history-filter')?.addEventListener('change', renderHistory);
+$('clear-all-btn')?.addEventListener('click', () => {
+  if (!confirm('Delete ALL goals and transactions? This cannot be undone.')) return;
+  goals = []; activeId = null;
+  save();
+  showScreen('dashboard');
+  renderDashboard();
+});
 
 // Sidebar nav
 document.querySelectorAll('.nav-item').forEach(btn => {
@@ -445,6 +569,9 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     } else if (screen === 'history') {
       showScreen('history');
       renderHistory();
+    } else if (screen === 'profile') {
+      showScreen('profile');
+      renderProfile();
     }
   });
 });

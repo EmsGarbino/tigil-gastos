@@ -86,6 +86,56 @@
 .sidebar-footer {
   padding-top: 1.25rem;
   border-top: 1px solid rgba(255,255,255,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.1);
+  cursor: default;
+}
+.sidebar-user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #85c79a, #4e8d9c);
+  color: #281c59;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  letter-spacing: -0.01em;
+}
+.sidebar-user-info {
+  min-width: 0;
+  flex: 1;
+}
+.sidebar-user-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #edf7bd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+.sidebar-user-email {
+  font-size: 0.65rem;
+  color: rgba(237,247,189,0.45);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 2px;
+  font-family: var(--font-mono);
 }
 .btn-signout {
   display: flex;
@@ -180,6 +230,7 @@
 }
 .setup-form-card { /* extends .glass-card */ }
 
+/* How it works panel */
 .setup-preview {
   background: var(--surface);
   border: 1.5px solid var(--border2);
@@ -270,6 +321,14 @@
   gap: 1.25rem;
 }
 
+/* ── TRACKER ROW 2: history + log ───────────────────────── */
+.tracker-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
 /* ── ACTION CARDS ────────────────────────────────────────── */
 .action-row {
   display: grid;
@@ -283,20 +342,6 @@
   color: var(--text);
   margin-bottom: 4px;
   letter-spacing: -0.01em;
-}
-
-/* ── HISTORY SCREEN ──────────────────────────────────────── */
-/* 5-column rows for the history table (date / goal / action / amount / balance) */
-#history-screen .hist-row {
-  grid-template-columns: 0.8fr 1.4fr 1fr 1fr 1fr;
-}
-.hist-goal-name {
-  color: var(--text2);
-  font-size: 0.8rem;
-  font-weight: 600;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 /* ── BG COINS ────────────────────────────────────────────── */
@@ -324,6 +369,9 @@
 .c6 { left: 91%; bottom: -80px; animation-duration: 17s; animation-delay: 4s;  font-size: 1rem; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
+@media (max-width: 1200px) {
+  .tracker-row2 { grid-template-columns: 1fr; }
+}
 @media (max-width: 1024px) {
   .setup-grid { grid-template-columns: 1fr; }
   .setup-preview { display: none; }
@@ -334,8 +382,6 @@
   .sidebar { width: 200px; }
   .screen { padding: 1.5rem; }
   .topbar { padding: 1rem 1.5rem; }
-  #history-screen .hist-row { grid-template-columns: 0.8fr 1fr 1fr 1fr; }
-  #history-screen .hist-goal-name { display: none; }
 }
 @media (max-width: 600px) {
   .site-wrap { flex-direction: column; }

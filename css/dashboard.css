@@ -1,3 +1,4 @@
+/* ── STATS STRIP ─────────────────────────────────────────── */
 .stats-strip {
   display: grid;
   grid-template-columns: 1fr auto 1fr auto 1fr;
@@ -38,6 +39,7 @@
   flex-shrink: 0;
 }
 
+/* ── PROGRESS BAR ────────────────────────────────────────── */
 .prog-track {
   background: var(--bg3);
   border-radius: 999px;
@@ -77,6 +79,7 @@
   opacity: 0;
 }
 
+/* ── ACTION CARDS ────────────────────────────────────────── */
 .action-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -118,6 +121,7 @@
   flex: 1;
 }
 
+/* ── LOG PANEL ───────────────────────────────────────────── */
 .log-panel {
   background: var(--bg2);
   border: 1.5px solid var(--border2);
@@ -183,6 +187,7 @@
 .log-unlock  { border-left-color: #c0853a;       color: #c0853a; }
 .log-claim   { border-left-color: var(--green);  color: var(--green2); }
 
+/* ── HISTORY ─────────────────────────────────────────────── */
 .hist-panel {
   background: var(--surface);
   border: 1.5px solid var(--border2);
@@ -234,8 +239,10 @@
 .hist-amt-wit { color: var(--red);   font-family: var(--font-mono); font-weight: 600; }
 .hist-balance { color: var(--text2); font-family: var(--font-mono); font-size: 0.74rem; }
 
+/* ── RESET ROW ───────────────────────────────────────────── */
 .reset-row { display: flex; justify-content: center; padding: 0.5rem 0; }
 
+/* ── GOALS GRID (dashboard) ──────────────────────────────── */
 .goals-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -335,6 +342,7 @@
   color: var(--purple2);
 }
 
+/* ── DANGER GHOST BUTTON ─────────────────────────────────── */
 .btn-ghost-danger {
   border-color: var(--border2);
   color: var(--text3);
@@ -344,9 +352,135 @@
   color: var(--red);
 }
 
+/* ── SMALL MAIN BUTTON ───────────────────────────────────── */
 .btn-main-sm {
   padding: 10px 20px;
   font-size: 0.88rem;
   margin-top: 0;
   width: auto;
+}
+
+/* ── TRACKER ROW 2 ───────────────────────────────────────── */
+.tracker-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── PROFILE SCREEN ──────────────────────────────────────── */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.profile-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4e8d9c, #281c59);
+  color: #edf7bd;
+  font-size: 1.4rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: -0.02em;
+  align-self: flex-start;
+  box-shadow: 0 4px 16px rgba(40,28,89,0.2);
+}
+
+.profile-info {
+  margin-bottom: 0.25rem;
+}
+.profile-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.profile-email {
+  font-size: 0.78rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+  margin-top: 3px;
+}
+
+.profile-divider {
+  border: none;
+  border-top: 1.5px solid var(--border2);
+  margin: 0.25rem 0;
+}
+
+.profile-success {
+  font-size: 0.8rem;
+  color: var(--green2);
+  font-weight: 600;
+  padding: 6px 0;
+}
+
+.profile-side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.profile-stats-card,
+.profile-danger-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.profile-section-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--text2);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 0.25rem;
+}
+
+.profile-stat-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.profile-stat-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border2);
+  font-size: 0.83rem;
+  color: var(--text2);
+}
+.profile-stat-row:last-child { border-bottom: none; }
+.profile-stat-val {
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--text);
+}
+
+.profile-danger-desc {
+  font-size: 0.8rem;
+  color: var(--text3);
+  line-height: 1.55;
+}
+.profile-danger-btn {
+  align-self: flex-start;
+  padding: 8px 18px;
+}
+
+@media (max-width: 900px) {
+  .profile-grid { grid-template-columns: 1fr; }
+  .tracker-row2 { grid-template-columns: 1fr; }
 }
