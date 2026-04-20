@@ -4,7 +4,7 @@ TigilGastos is a web-based savings tracker designed to help students manage and 
 ---
 
 ## 📌 Problem
-College students in urban areas like Quezon City often struggle to save consistently. Daily expenses — food, transportation, load, and leisure — eat into their budget, leaving them short when it matters most: tuition deadlines, semester enrollment, or unexpected emergencies. Without a structured system, money set aside for a goal is easy to spend before it's needed.
+College students often struggle to save consistently. Daily expenses — food, transportation, load, and leisure — eat into their budget, leaving them short when it matters most: tuition deadlines, semester enrollment, or unexpected emergencies. Without a structured system, money set aside for a goal is easy to spend before it's needed.
 
 ---
 
