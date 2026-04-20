@@ -26,7 +26,7 @@ TigilGastos lets students create multiple savings jars, each tied to a specific 
 ---
 
 ## 👥 Target Users
-College students in urban areas such as Quezon City who have limited disposable income and struggle with consistent saving habits — whether saving for tuition, living expenses, or personal milestones. TigilGastos gives them a reliable, self-enforced system to keep their money safe from impulsive spending until it's truly needed.
+College students who have limited disposable income and struggle with consistent saving habits — whether saving for tuition, living expenses, or personal milestones. TigilGastos gives them a reliable, self-enforced system to keep their money safe from impulsive spending until it's truly needed.
 
 ---
 
