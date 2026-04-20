@@ -1,52 +1,42 @@
-/* Fonts loaded via <link> in index.html */
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* ── Backgrounds ── */
-  --bg:       #f5f0e8;
-  --bg2:      #ede7d9;
-  --bg3:      #e4dccb;
-  --surface:  #faf7f2;
-  --surface2: #ede7d9;
 
-  /* ── Borders ── */
-  --border:   #c9bfa820;
-  --border2:  #b8a98840;
+  --bg:       #f0f5e8;     
+  --bg2:      #e4edcd;    
+  --bg3:      #d8e5bb;     
+  --surface:  #ffffff;
+  --surface2: #edf7bd;   
 
-  /* ── Amber gold (primary) ── */
-  --gold:      #c8860a;
-  --gold2:     #a36808;
-  --gold-light: #f5c542;
-  --gold-glow: #c8860a25;
-  --gold-bg:   #fef3d0;
+  --border:   #85c79a30;
+  --border2:  #4e8d9c30;
 
-  /* ── Indigo (lock/secondary) ── */
-  --purple:    #4f5fa8;
-  --purple2:   #3a4a8c;
-  --purple-glow: #4f5fa820;
+  --gold:      #4e8d9c;
+  --gold2:     #3a7080;
+  --gold-light: #85c79a;
+  --gold-glow: #4e8d9c28;
+  --gold-bg:   #edf7bd;
 
-  /* ── Sage green (success) ── */
-  --green:     #3a7d5a;
-  --green2:    #2d6147;
-  --green-glow: #3a7d5a20;
+  --purple:    #281c59;
+  --purple2:   #1a1240;
+  --purple-glow: #281c5920;
 
-  /* ── Error ── */
+  --green:     #85c79a;
+  --green2:    #5aaa72;
+  --green-glow: #85c79a28;
+
   --red:       #c0392b;
 
-  /* ── Typography ── */
-  --text:      #2c1f0e;
-  --text2:     #6b5740;
-  --text3:     #9c8468;
+  --text:      #281c59;    
+  --text2:     #4e8d9c;     
+  --text3:     #7aaabb;     
 
-  /* ── Shape ── */
-  --radius:    14px;
-  --radius-sm: 9px;
+  --radius:    12px;
+  --radius-sm: 8px;
 
-  /* ── Fonts ── */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono:    'IBM Plex Mono', 'Courier New', monospace;
+  --font-display: 'Inter', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Courier New', monospace;
 }
 
 html { scroll-behavior: smooth; }
@@ -56,7 +46,6 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
-  padding: 0 0 4rem;
   overflow-x: hidden;
   position: relative;
 }

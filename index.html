@@ -6,46 +6,53 @@
   <title>TigilGastos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/main.css"/>
 </head>
 <body>
 
   <div class="bg-coins" aria-hidden="true">
-    <span class="coin c1">₱</span>
-    <span class="coin c2">₱</span>
-    <span class="coin c3">₱</span>
-    <span class="coin c4">₱</span>
-    <span class="coin c5">₱</span>
-    <span class="coin c6">₱</span>
+    <span class="coin c1">₱</span><span class="coin c2">₱</span>
+    <span class="coin c3">₱</span><span class="coin c4">₱</span>
+    <span class="coin c5">₱</span><span class="coin c6">₱</span>
   </div>
 
-  <div class="app">
+  <div class="site-wrap">
 
-    <header class="header">
-      <div class="wordmark">
-        <!-- Clean SVG jar logo -->
-        <svg class="wordmark-logo" width="38" height="44" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- Lid -->
-          <rect x="7" y="1" width="24" height="9" rx="3" fill="#c8860a"/>
-          <!-- Coin slot -->
-          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#fff8f0"/>
-          <!-- Jar body -->
-          <rect x="3" y="10" width="32" height="31" rx="9" fill="#faf7f2" stroke="#c8860a" stroke-width="1.5"/>
-          <!-- Left shine strip -->
-          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#c8860a15"/>
-          <!-- Peso sign -->
-          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#c8860a" opacity="0.8">₱</text>
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-logo">
+        <svg width="30" height="35" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="7" y="1" width="24" height="9" rx="3" fill="#85c79a"/>
+          <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#edf7bd"/>
+          <rect x="3" y="10" width="32" height="31" rx="9" fill="#edf7bd" stroke="#85c79a" stroke-width="1.5"/>
+          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#4e8d9c20"/>
+          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#4e8d9c" opacity="0.9">₱</text>
         </svg>
         <div>
-          <h1 class="wordmark-title">TigilGastos</h1>
-          <p class="wordmark-sub">Locked savings for students</p>
+          <div class="sidebar-name">TigilGastos</div>
+          <div class="sidebar-sub">Savings for Students</div>
         </div>
       </div>
-      <div class="header-actions">
-        <span class="user-email" id="user-email"></span>
-        <button class="btn-signout" id="signout-btn" title="Sign out">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+
+      <nav class="sidebar-nav">
+        <button class="nav-item" data-screen="dashboard">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          My Goals
+        </button>
+        <button class="nav-item" data-screen="setup">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+          New Goal
+        </button>
+        <button class="nav-item hidden" data-screen="tracker" id="nav-tracker">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
+          Viewing Jar
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button class="btn-signout" id="signout-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
             <polyline points="16 17 21 12 16 7"/>
             <line x1="21" y1="12" x2="9" y2="12"/>
@@ -53,201 +60,213 @@
           Sign Out
         </button>
       </div>
-    </header>
+    </aside>
 
-    <!-- SETUP SCREEN -->
-    <section id="setup-screen" class="screen">
-      <div class="setup-hero">
-        <div class="setup-jar-anim" aria-hidden="true">
-          <div class="anim-jar">
-            <div class="anim-coin">₱</div>
-            <div class="anim-coin d2">₱</div>
-            <div class="anim-coin d3">₱</div>
-          </div>
+    <!-- ── MAIN CONTENT ── -->
+    <main class="main-content">
+
+      <div class="topbar">
+        <div class="topbar-title" id="topbar-title">My Goals</div>
+        <div class="topbar-right">
+          <span class="topbar-user" id="topbar-user"></span>
         </div>
-        <h2 class="setup-title">Start your savings jar</h2>
-        <p class="setup-desc">Set a goal, lock it in, and resist the urge to spend.</p>
       </div>
 
-      <div class="glass-card">
+      <!-- ══ DASHBOARD SCREEN ══ -->
+      <section id="dashboard-screen" class="screen hidden">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">My Goals</h2>
+            <p class="page-desc">Track all your savings jars in one place.</p>
+          </div>
+          <button class="btn-main btn-main-sm" onclick="showScreen('setup')">+ New Goal</button>
+        </div>
 
-        <!-- Savings category dropdown -->
-        <div class="field">
-          <label class="lbl" for="goal-category">What are you saving for?</label>
-          <div class="select-wrap">
-            <select class="inp sel" id="goal-category">
-              <option value="" disabled selected>Choose a category…</option>
-              <optgroup label="🎓 Education">
-                <option value="Tuition Fee">Tuition Fee</option>
-                <option value="Semester Enrollment">Semester Enrollment</option>
-                <option value="Books &amp; School Supplies">Books &amp; School Supplies</option>
-                <option value="Laptop / Gadget">Laptop / Gadget</option>
-                <option value="Review / Exam Fee">Review / Exam Fee</option>
-              </optgroup>
-              <optgroup label="🏠 Living">
-                <option value="Boarding House Rent">Boarding House Rent</option>
-                <option value="Monthly Allowance">Monthly Allowance</option>
-                <option value="Grocery / Food">Grocery / Food</option>
-                <option value="Transportation">Transportation</option>
-              </optgroup>
-              <optgroup label="🌟 Goals">
-                <option value="Emergency Fund">Emergency Fund</option>
-                <option value="Travel / Vacation">Travel / Vacation</option>
-                <option value="Gift / Celebration">Gift / Celebration</option>
-                <option value="Side Business">Side Business</option>
-              </optgroup>
-              <optgroup label="✏️ Custom">
-                <option value="__custom__">Other (type my own)…</option>
-              </optgroup>
-            </select>
-            <span class="select-arrow">▾</span>
+        <p class="hist-empty hidden" id="goals-empty" style="text-align:left; padding: 3rem 0; font-size:0.95rem;">
+          No goals yet. Create your first savings jar!
+        </p>
+        <div class="goals-grid" id="goals-grid"></div>
+      </section>
+
+      <!-- ══ SETUP SCREEN ══ -->
+      <section id="setup-screen" class="screen hidden">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">New Savings Jar</h2>
+            <p class="page-desc">Set a goal, lock it in, and resist the urge to spend.</p>
           </div>
         </div>
 
-        <!-- Shown only when "Other" is picked -->
-        <div class="field hidden" id="custom-goal-field">
-          <label class="lbl" for="goal-name">Describe your goal</label>
-          <input class="inp" type="text" id="goal-name" placeholder="e.g., New Phone Fund" maxlength="50"/>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label class="lbl">Target Amount</label>
-            <div class="inp-prefix-wrap">
-              <span class="prefix">₱</span>
-              <input class="inp inp-prefixed" type="number" id="goal-amount" placeholder="8000" min="1"/>
-            </div>
-          </div>
-          <div class="field">
-            <label class="lbl">Target Date</label>
-            <input class="inp" type="date" id="target-date"/>
-          </div>
-        </div>
-
-        <p class="err" id="setup-err"></p>
-        <button class="btn-main" id="create-btn">Create My Jar</button>
-      </div>
-    </section>
-
-    <!-- TRACKER SCREEN -->
-    <section id="tracker-screen" class="screen hidden">
-
-      <div class="tracker-topbar">
-        <button class="btn-back" id="back-btn">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="15 18 9 12 15 6"/>
-          </svg>
-          Back
-        </button>
-      </div>
-
-      <div class="jar-hero">
-        <div class="jar-meta">
-          <h2 class="jar-goal-name" id="disp-name">Tuition Fund</h2>
-          <div class="jar-badges">
-            <span class="chip chip-date" id="disp-date"></span>
-            <span class="chip" id="lock-chip">Unlocked</span>
-          </div>
-        </div>
-
-        <div class="jar-stage">
-          <div class="jar-body">
-            <div class="jar-lid">
-              <div class="jar-slot" id="jar-slot"></div>
-            </div>
-            <div class="jar-vessel">
-              <div class="jar-fill" id="jar-fill">
-                <div class="jar-wave"></div>
+        <div class="setup-grid">
+          <div class="glass-card setup-form-card">
+            <div class="field">
+              <label class="lbl" for="goal-category">Savings Goal</label>
+              <div class="select-wrap">
+                <select class="inp sel" id="goal-category">
+                  <option value="" disabled selected>Choose a category…</option>
+                  <optgroup label="Education">
+                    <option value="Tuition Fee">Tuition Fee</option>
+                    <option value="Semester Enrollment">Semester Enrollment</option>
+                    <option value="Books and School Supplies">Books and School Supplies</option>
+                    <option value="Laptop or Gadget">Laptop or Gadget</option>
+                    <option value="Review or Exam Fee">Review or Exam Fee</option>
+                  </optgroup>
+                  <optgroup label="Living Expenses">
+                    <option value="Boarding House Rent">Boarding House Rent</option>
+                    <option value="Monthly Allowance">Monthly Allowance</option>
+                    <option value="Grocery and Food">Grocery and Food</option>
+                    <option value="Transportation">Transportation</option>
+                  </optgroup>
+                  <optgroup label="Personal Goals">
+                    <option value="Emergency Fund">Emergency Fund</option>
+                    <option value="Travel Fund">Travel Fund</option>
+                    <option value="New Phone or Device">New Phone or Device</option>
+                    <option value="Side Business">Side Business</option>
+                  </optgroup>
+                  <optgroup label="Custom">
+                    <option value="__custom__">Other — type my own</option>
+                  </optgroup>
+                </select>
+                <span class="select-arrow">▾</span>
               </div>
-              <div class="jar-pct" id="jar-pct">0%</div>
-              <div class="jar-shine"></div>
+            </div>
+
+            <div class="field hidden" id="custom-goal-field">
+              <label class="lbl" for="goal-name">Describe your goal</label>
+              <input class="inp" type="text" id="goal-name" placeholder="e.g., New Uniform Fund" maxlength="50"/>
+            </div>
+
+            <div class="field-row">
+              <div class="field">
+                <label class="lbl">Target Amount</label>
+                <div class="inp-prefix-wrap">
+                  <span class="prefix">₱</span>
+                  <input class="inp inp-prefixed" type="number" id="goal-amount" placeholder="8,000" min="1"/>
+                </div>
+              </div>
+              <div class="field">
+                <label class="lbl">Target Date</label>
+                <input class="inp" type="date" id="target-date"/>
+              </div>
+            </div>
+
+            <p class="err" id="setup-err"></p>
+            <button class="btn-main" id="create-btn">Create My Jar</button>
+          </div>
+
+          <div class="setup-preview">
+            <div class="setup-jar-anim">
+              <div class="anim-jar">
+                <div class="anim-coin">₱</div>
+                <div class="anim-coin d2">₱</div>
+                <div class="anim-coin d3">₱</div>
+              </div>
+            </div>
+            <h3 class="setup-preview-title">How it works</h3>
+            <ul class="how-list">
+              <li><span class="how-num">1</span><span>Choose what you're saving for and set a target amount.</span></li>
+              <li><span class="how-num">2</span><span>Deposit money into your jar whenever you can.</span></li>
+              <li><span class="how-num">3</span><span>Lock the jar to prevent early withdrawals.</span></li>
+              <li><span class="how-num">4</span><span>Claim your savings once the goal or date is reached.</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ══ TRACKER SCREEN ══ -->
+      <section id="tracker-screen" class="screen hidden">
+
+        <div class="page-header">
+          <div>
+            <h2 class="page-title" id="disp-name">My Jar</h2>
+            <div class="jar-badges" style="margin-top:6px;">
+              <span class="chip chip-date" id="disp-date"></span>
+              <span class="chip" id="lock-chip">Unlocked</span>
             </div>
           </div>
-          <div class="coin-drop-wrap">
-            <div class="coin-drop" id="coin-drop">₱</div>
+          <div style="display:flex; gap:0.75rem;">
+            <button class="btn-ghost" id="reset-btn">+ New Goal</button>
+            <button class="btn-ghost btn-ghost-danger" id="delete-goal-btn">Delete</button>
           </div>
         </div>
-      </div>
 
-      <div class="stats-strip">
-        <div class="stat">
-          <span class="stat-n gold" id="stat-saved">₱0</span>
-          <span class="stat-l">Saved</span>
-        </div>
-        <div class="stat-div"></div>
-        <div class="stat">
-          <span class="stat-n" id="stat-goal">₱0</span>
-          <span class="stat-l">Goal</span>
-        </div>
-        <div class="stat-div"></div>
-        <div class="stat">
-          <span class="stat-n" id="stat-left">₱0</span>
-          <span class="stat-l">Remaining</span>
-        </div>
-      </div>
-
-      <div class="prog-track">
-        <div class="prog-fill" id="prog-fill"></div>
-        <span class="prog-label" id="prog-label">0%</span>
-      </div>
-
-      <div class="action-row">
-        <div class="act-card">
-          <div class="act-card-top">
-            <h3>Drop Coins</h3>
+        <div class="success-banner hidden" id="success-banner">
+          <div class="success-icon-wrap">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green2)"><polyline points="20 6 9 17 4 12"/></svg>
           </div>
-          <div class="inp-prefix-wrap">
-            <span class="prefix">₱</span>
-            <input class="inp inp-prefixed inp-dark" type="number" id="deposit-amt" placeholder="500" min="1"/>
+          <div>
+            <strong>Goal Reached!</strong>
+            <p>You saved your full target. Your jar is now open for withdrawal.</p>
           </div>
-          <p class="err" id="dep-err"></p>
-          <button class="btn-action btn-gold" id="deposit-btn">Add to Jar</button>
         </div>
 
-        <div class="act-card">
-          <div class="act-card-top">
-            <h3 id="lock-card-title">Lock Controls</h3>
+        <div class="tracker-row1">
+          <div class="jar-card">
+            <div class="jar-stage">
+              <div class="jar-body">
+                <div class="jar-lid"><div class="jar-slot" id="jar-slot"></div></div>
+                <div class="jar-vessel">
+                  <div class="jar-fill" id="jar-fill"><div class="jar-wave"></div></div>
+                  <div class="jar-pct" id="jar-pct">0%</div>
+                  <div class="jar-shine"></div>
+                </div>
+              </div>
+              <div class="coin-drop-wrap"><div class="coin-drop" id="coin-drop">₱</div></div>
+            </div>
           </div>
-          <p class="act-desc" id="lock-desc">Activate the lock to guard your savings from yourself.</p>
-          <p class="err" id="lock-err"></p>
-          <button class="btn-action btn-purple" id="lock-btn">Lock Jar</button>
-          <button class="btn-action btn-green hidden" id="withdraw-btn">Withdraw</button>
+
+          <div class="tracker-col-right">
+            <div class="stats-strip">
+              <div class="stat"><span class="stat-n gold" id="stat-saved">₱0</span><span class="stat-l">Saved</span></div>
+              <div class="stat-div"></div>
+              <div class="stat"><span class="stat-n" id="stat-goal">₱0</span><span class="stat-l">Goal</span></div>
+              <div class="stat-div"></div>
+              <div class="stat"><span class="stat-n" id="stat-left">₱0</span><span class="stat-l">Remaining</span></div>
+            </div>
+
+            <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
+
+            <div class="action-row">
+              <div class="act-card">
+                <h3 class="act-title">Deposit</h3>
+                <p class="act-desc">Add money to your jar.</p>
+                <div class="inp-prefix-wrap" style="margin-top:auto;">
+                  <span class="prefix">₱</span>
+                  <input class="inp inp-prefixed inp-dark" type="number" id="deposit-amt" placeholder="500" min="1"/>
+                </div>
+                <p class="err" id="dep-err"></p>
+                <button class="btn-action btn-gold" id="deposit-btn">Add to Jar</button>
+              </div>
+              <div class="act-card">
+                <h3 class="act-title" id="lock-card-title">Lock Jar</h3>
+                <p class="act-desc" id="lock-desc">Lock to prevent early withdrawal.</p>
+                <p class="err" id="lock-err"></p>
+                <button class="btn-action btn-purple" id="lock-btn" style="margin-top:auto;">Lock Jar</button>
+                <button class="btn-action btn-green hidden" id="withdraw-btn">Withdraw</button>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <div class="log-panel">
-        <div class="log-header">
-          <span class="log-dot"></span>
-          <span class="log-title">Smart Contract Log</span>
-          <span class="log-badge">Soroban</span>
+        <div class="tracker-row2">
+          <div class="hist-panel">
+            <h3 class="hist-title">Transaction History</h3>
+            <div class="hist-body" id="hist-body">
+              <p class="hist-empty">No transactions yet.</p>
+            </div>
+          </div>
+          <div class="log-panel">
+            <div class="log-header">
+              <span class="log-dot"></span>
+              <span class="log-title">Smart Contract Log</span>
+              <span class="log-badge">Soroban</span>
+            </div>
+            <ul class="log-list" id="log-list"></ul>
+          </div>
         </div>
-        <ul class="log-list" id="log-list"></ul>
-      </div>
 
-      <div class="hist-panel">
-        <h3 class="hist-title">Transaction History</h3>
-        <div class="hist-body" id="hist-body">
-          <p class="hist-empty" id="hist-empty">No transactions yet. Drop your first coin! 🪙</p>
-        </div>
-      </div>
-
-      <div class="reset-row">
-        <button class="btn-ghost" id="reset-btn">↺ Start New Goal</button>
-      </div>
-    </section>
-
-    <div class="success-banner hidden" id="success-banner">
-      <div class="success-icon-wrap">
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--green)">
-          <polyline points="20 6 9 17 4 12"/>
-        </svg>
-      </div>
-      <div>
-        <strong>Goal Reached!</strong>
-        <p>You saved your full target. Your jar is now open for withdrawal.</p>
-      </div>
-    </div>
-
+      </section>
+    </main>
   </div>
 
   <script>
@@ -257,37 +276,25 @@
     else {
       try {
         const u = JSON.parse(tgUser);
-        const el = document.getElementById('user-email');
+        const el = document.getElementById('topbar-user');
         if (el && u.email) el.textContent = u.email;
       } catch {}
     }
 
-    /* ── Sign out ── */
     document.getElementById('signout-btn').addEventListener('click', () => {
       localStorage.removeItem('tg_user');
       window.location.href = 'signin.html';
-    });
-
-    /* ── Back button — returns to setup screen ── */
-    document.getElementById('back-btn').addEventListener('click', () => {
-      document.getElementById('tracker-screen').classList.add('hidden');
-      document.getElementById('setup-screen').classList.remove('hidden');
-      document.getElementById('success-banner').classList.add('hidden');
     });
 
     /* ── Dropdown toggle ── */
     const categorySelect = document.getElementById('goal-category');
     const customField    = document.getElementById('custom-goal-field');
     const goalNameInput  = document.getElementById('goal-name');
-
     categorySelect.addEventListener('change', () => {
-      if (categorySelect.value === '__custom__') {
-        customField.classList.remove('hidden');
-        goalNameInput.focus();
-      } else {
-        customField.classList.add('hidden');
-        goalNameInput.value = '';
-      }
+      const isCustom = categorySelect.value === '__custom__';
+      customField.classList.toggle('hidden', !isCustom);
+      if (isCustom) goalNameInput.focus();
+      else goalNameInput.value = '';
     });
   </script>
   <script src="app.js"></script>

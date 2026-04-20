@@ -6,35 +6,35 @@
   <title>TigilGastos — Sign In</title>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg:        #f5f0e8;
-      --bg2:       #ede7d9;
-      --bg3:       #e4dccb;
-      --surface:   #faf7f2;
-      --surface2:  #ede7d9;
-      --border:    #c9bfa820;
-      --border2:   #b8a98840;
-      --gold:      #c8860a;
-      --gold2:     #a36808;
-      --gold-light: #f5c542;
-      --gold-glow: #c8860a25;
-      --gold-bg:   #fef3d0;
-      --green:     #3a7d5a;
-      --green2:    #2d6147;
-      --green-glow: #3a7d5a20;
-      --red:       #c0392b;
-      --text:      #2c1f0e;
-      --text2:     #6b5740;
-      --text3:     #9c8468;
+      --bg:        #f0f5e8;
+      --bg2:       #e4edcd;
+      --bg3:       #d8e5bb;
+      --surface:   #ffffff;
+      --surface2:  #edf7bd;
+      --border:    #85c79a30;
+      --border2:   #4e8d9c30;
+      --gold:      #4e8d9c;
+      --gold2:     #3a7080;
+      --gold-light: #85c79a;
+      --gold-glow: #4e8d9c28;
+      --gold-bg:   #edf7bd;
+      --green:     #85c79a;
+      --green2:    #5aaa72;
+      --green-glow: #85c79a28;
+      --red:       #e05050;
+      --text:      #281c59;
+      --text2:     #4e8d9c;
+      --text3:     #7aaabb;
       --radius:    14px;
       --radius-sm: 9px;
-      --font-display: 'Playfair Display', Georgia, serif;
-      --font-body:    'Plus Jakarta Sans', system-ui, sans-serif;
-      --font-mono:    'IBM Plex Mono', monospace;
+      --font-display: 'Inter', system-ui, sans-serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+      --font-mono:    'JetBrains Mono', monospace;
     }
 
     html { scroll-behavior: smooth; }
@@ -497,11 +497,11 @@
     <div class="logo-area">
       <div class="logo-wrap">
         <svg width="34" height="38" viewBox="0 0 38 44" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <rect x="7" y="1" width="24" height="9" rx="3" fill="#c8860a"/>
+          <rect x="7" y="1" width="24" height="9" rx="3" fill="#4e8d9c"/>
           <rect x="16" y="4.5" width="6" height="2" rx="1" fill="#fff8f0"/>
-          <rect x="3" y="10" width="32" height="31" rx="9" fill="#faf7f2" stroke="#c8860a" stroke-width="1.5"/>
-          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#c8860a15"/>
-          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#c8860a" opacity="0.8">₱</text>
+          <rect x="3" y="10" width="32" height="31" rx="9" fill="#faf7f2" stroke="#4e8d9c" stroke-width="1.5"/>
+          <rect x="8" y="15" width="3" height="12" rx="1.5" fill="#4e8d9c15"/>
+          <text x="19" y="31" text-anchor="middle" font-family="monospace" font-size="12" fill="#4e8d9c" opacity="0.8">₱</text>
         </svg>
         <span class="logo-name">TigilGastos</span>
       </div>
@@ -567,7 +567,6 @@
       </p>
     </div>
 
-    <!-- Success state (shown after login) -->
     <div class="success-msg" id="success-msg">
       <span class="check">🎉</span>
       <strong>Signed in!</strong>
@@ -585,14 +584,12 @@
     const formArea  = document.getElementById('form-area');
     const successEl = document.getElementById('success-msg');
 
-    /* ── Password visibility toggle ── */
     pwToggle.addEventListener('click', () => {
       const show = pwInp.type === 'password';
       pwInp.type = show ? 'text' : 'password';
       pwToggle.textContent = show ? '🙈' : '👁';
     });
 
-    /* ── Sign-in handler ── */
     signinBtn.addEventListener('click', handleSignIn);
     [emailInp, pwInp].forEach(el =>
       el.addEventListener('keydown', e => { if (e.key === 'Enter') handleSignIn(); })
@@ -605,7 +602,6 @@
       const email = emailInp.value.trim();
       const pw    = pwInp.value;
 
-      /* Basic validation */
       if (!email) {
         showErr('Please enter your email address.');
         emailInp.focus();
@@ -627,19 +623,17 @@
         return;
       }
 
-      /* Simulate loading → success */
       signinBtn.classList.add('loading');
       signinBtn.querySelector('.btn-label').textContent = 'Signing in…';
 
       setTimeout(() => {
-        /* Save user session */
+       
         localStorage.setItem('tg_user', JSON.stringify({ email: email }));
 
         signinBtn.classList.remove('loading');
         formArea.style.display = 'none';
         successEl.style.display = 'block';
 
-        /* Redirect after 1.5s */
         setTimeout(() => {
           window.location.href = 'index.html';
         }, 1500);
@@ -648,7 +642,7 @@
 
     function showErr(msg) {
       errMsg.textContent = msg;
-      void errMsg.offsetWidth; /* reflow for re-animation */
+      void errMsg.offsetWidth; 
       errMsg.style.animation = 'shake 0.35s ease both';
     }
   </script>

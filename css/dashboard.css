@@ -1,32 +1,31 @@
-/* ── STATS STRIP ─────────────────────────────────────────── */
 .stats-strip {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr;
   align-items: center;
-  justify-content: center;
   background: var(--surface);
   border: 1.5px solid var(--border2);
   border-radius: var(--radius);
-  padding: 1.25rem 1rem;
-  margin: 1.25rem 0 0.75rem;
+  padding: 1.1rem 1.25rem;
   box-shadow: 0 1px 0 #fff inset, 0 4px 16px rgba(44,31,14,0.07);
 }
 .stat {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
+  padding: 0 0.5rem;
 }
 .stat-n {
   font-family: var(--font-mono);
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   font-weight: 500;
   color: var(--text);
   transition: color 0.3s;
+  white-space: nowrap;
 }
 .stat-n.gold { color: var(--gold); }
 .stat-l {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   color: var(--text3);
@@ -34,11 +33,11 @@
 }
 .stat-div {
   width: 1px;
-  height: 36px;
+  height: 32px;
   background: var(--border2);
+  flex-shrink: 0;
 }
 
-/* ── PROGRESS BAR ────────────────────────────────────────── */
 .prog-track {
   background: var(--bg3);
   border-radius: 999px;
@@ -51,7 +50,7 @@
 .prog-fill {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, var(--gold2), var(--gold-light));
+  background: linear-gradient(90deg, #4e8d9c, #85c79a);
   border-radius: 999px;
   transition: width 0.7s cubic-bezier(0.34, 1.2, 0.64, 1);
   position: relative;
@@ -78,7 +77,6 @@
   opacity: 0;
 }
 
-/* ── ACTION CARDS ────────────────────────────────────────── */
 .action-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -120,7 +118,6 @@
   flex: 1;
 }
 
-/* ── LOG PANEL ───────────────────────────────────────────── */
 .log-panel {
   background: var(--bg2);
   border: 1.5px solid var(--border2);
@@ -153,7 +150,7 @@
   font-size: 0.63rem;
   font-family: var(--font-mono);
   font-weight: 500;
-  background: #eef0fa;
+  background: #e8e5f5;
   color: var(--purple);
   border: 1px solid var(--purple);
   padding: 2px 8px;
@@ -186,7 +183,6 @@
 .log-unlock  { border-left-color: #c0853a;       color: #c0853a; }
 .log-claim   { border-left-color: var(--green);  color: var(--green2); }
 
-/* ── HISTORY ─────────────────────────────────────────────── */
 .hist-panel {
   background: var(--surface);
   border: 1.5px solid var(--border2);
@@ -234,9 +230,123 @@
 }
 .hist-date    { color: var(--text3); font-family: var(--font-mono); font-size: 0.71rem; }
 .hist-action  { color: var(--text2); font-weight: 700; }
-.hist-amt-dep { color: var(--green2); font-family: var(--font-mono); font-weight: 600; }
+.hist-amt-dep { color: var(--gold2); font-family: var(--font-mono); font-weight: 600; }
 .hist-amt-wit { color: var(--red);   font-family: var(--font-mono); font-weight: 600; }
 .hist-balance { color: var(--text2); font-family: var(--font-mono); font-size: 0.74rem; }
 
-/* ── RESET ROW ───────────────────────────────────────────── */
 .reset-row { display: flex; justify-content: center; padding: 0.5rem 0; }
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+.goal-card {
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  box-shadow: 0 1px 0 #fff inset, 0 4px 16px rgba(40,28,89,0.06);
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+  cursor: default;
+}
+.goal-card:hover {
+  border-color: var(--gold);
+  box-shadow: 0 1px 0 #fff inset, 0 6px 24px rgba(78,141,156,0.15);
+  transform: translateY(-2px);
+}
+
+.goal-card-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+.goal-card-name {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+}
+.goal-card-date {
+  font-size: 0.72rem;
+  color: var(--text3);
+  font-family: var(--font-mono);
+}
+.goal-card-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0.25rem 0;
+}
+.goal-card-bar {
+  flex: 1;
+  height: 7px;
+  background: var(--bg3);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.goal-card-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4e8d9c, #85c79a);
+  border-radius: 999px;
+  transition: width 0.6s ease;
+}
+.goal-card-bar-fill.locked    { background: linear-gradient(90deg, #281c59, #4f5fa8); }
+.goal-card-bar-fill.completed { background: linear-gradient(90deg, #5aaa72, #85c79a); }
+.goal-card-pct {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text2);
+  white-space: nowrap;
+  min-width: 36px;
+  text-align: right;
+}
+.goal-card-amounts {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+}
+.goal-card-saved { color: var(--gold); font-weight: 600; font-family: var(--font-mono); }
+.goal-card-goal  { color: var(--text3); font-family: var(--font-mono); }
+
+.goal-card-btn {
+  margin-top: 0.5rem;
+  padding: 8px 0;
+  background: var(--gold-bg);
+  border: 1.5px solid #c5e8a0;
+  border-radius: var(--radius-sm);
+  color: var(--purple);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  text-align: center;
+}
+.goal-card-btn:hover {
+  background: #e0f2a0;
+  border-color: var(--gold2);
+  color: var(--purple2);
+}
+
+.btn-ghost-danger {
+  border-color: var(--border2);
+  color: var(--text3);
+}
+.btn-ghost-danger:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+.btn-main-sm {
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  margin-top: 0;
+  width: auto;
+}
