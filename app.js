@@ -5,8 +5,8 @@
 const STORE_KEY = 'tigilgastos_v3';
 
 // ── STATE ────────────────────────────────────────────────────
-let goals      = [];       // array of goal objects
-let activeId   = null;     // id of currently viewed goal
+let goals      = [];
+let activeId   = null;
 
 function newGoal(name, amount, date) {
   return {
@@ -127,36 +127,31 @@ const withdrawBtn= $('withdraw-btn');
 const lockErr    = $('lock-err');
 const lockDesc   = $('lock-desc');
 const logList    = $('log-list');
-const histBody   = $('hist-body');
 const resetBtn   = $('reset-btn');
 
 // ── SCREEN SWITCHING ──────────────────────────────────────────
 window.showScreen = showScreen;
 function showScreen(name) {
-  ['setup', 'dashboard', 'tracker'].forEach(s => {
+  ['setup', 'dashboard', 'tracker', 'history'].forEach(s => {
     $(`${s}-screen`).classList.toggle('hidden', s !== name);
   });
   document.querySelectorAll('.nav-item').forEach(b => {
     b.classList.toggle('active', b.dataset.screen === name);
   });
-  const titles = { setup: 'New Goal', dashboard: 'My Goals', tracker: 'Jar Detail' };
+  const titles = { setup: 'New Goal', dashboard: 'My Goals', tracker: 'Jar Detail', history: 'History' };
   $('topbar-title').textContent = titles[name] || '';
 
-  // Show "Viewing Jar" nav only when tracker is active
   const navTracker = $('nav-tracker');
   if (navTracker) navTracker.classList.toggle('hidden', name !== 'tracker');
 }
 
 // ── RENDER: DASHBOARD ─────────────────────────────────────────
 function renderDashboard() {
-  const grid = $('goals-grid');
+  const grid  = $('goals-grid');
   const empty = $('goals-empty');
   grid.innerHTML = '';
 
-  if (!goals.length) {
-    empty.classList.remove('hidden');
-    return;
-  }
+  if (!goals.length) { empty.classList.remove('hidden'); return; }
   empty.classList.add('hidden');
 
   goals.forEach(g => {
@@ -200,11 +195,9 @@ function renderTracker() {
     dispDate.style.display = 'none';
   }
 
-  // Chip
   lockChip.textContent = statusLabel(g);
   lockChip.className   = 'chip ' + statusClass(g);
 
-  // Jar
   const p = pct(g.totalSaved, g.goalAmount);
   jarFill.style.height = p + '%';
   jarPct.textContent   = p + '%';
@@ -212,18 +205,15 @@ function renderTracker() {
   if (jarVessel) jarVessel.className = 'jar-vessel' + (g.isLocked ? ' locked' : '') + (g.isCompleted ? ' completed' : '');
   if (jarSlot)   jarSlot.className   = 'jar-slot'   + (g.isLocked ? ' glowing' : '');
 
-  // Progress
   progFill.style.width = p + '%';
   progFill.className   = 'prog-fill' + (g.isLocked ? ' locked' : '') + (g.isCompleted ? ' completed' : '');
 
-  // Stats
   const remaining = Math.max(0, g.goalAmount - g.totalSaved);
   statSaved.textContent = '₱' + fmt(g.totalSaved);
   statGoal.textContent  = '₱' + fmt(g.goalAmount);
   statLeft.textContent  = '₱' + fmt(remaining);
   statSaved.className   = 'stat-n' + (g.totalSaved > 0 ? ' gold' : '');
 
-  // Buttons
   if (g.isCompleted) {
     lockBtn.classList.add('hidden');
     withdrawBtn.classList.remove('hidden');
@@ -232,21 +222,20 @@ function renderTracker() {
   } else if (g.isLocked) {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent = 'Unlock Jar';
-    lockBtn.className   = 'btn-action btn-purple';
+    lockBtn.textContent  = 'Unlock Jar';
+    lockBtn.className    = 'btn-action btn-purple';
     lockDesc.textContent = 'Jar is locked. Withdrawal blocked until goal or date is reached.';
   } else {
     lockBtn.classList.remove('hidden');
     withdrawBtn.classList.add('hidden');
-    lockBtn.textContent = 'Lock Jar';
-    lockBtn.className   = 'btn-action btn-purple';
+    lockBtn.textContent  = 'Lock Jar';
+    lockBtn.className    = 'btn-action btn-purple';
     lockDesc.textContent = 'Activate the lock to guard your savings from yourself.';
   }
 
   $('success-banner').classList.toggle('hidden', !g.isCompleted);
 
   renderLog(g);
-  renderHistory(g);
 }
 
 function renderLog(g) {
@@ -259,26 +248,60 @@ function renderLog(g) {
   });
 }
 
-function renderHistory(g) {
-  histBody.innerHTML = '';
-  if (!g.transactions.length) {
-    histBody.innerHTML = '<p class="hist-empty">No transactions yet.</p>';
+// ── RENDER: HISTORY SCREEN ────────────────────────────────────
+function renderHistory() {
+  const filterEl  = $('history-filter');
+  const rowsEl    = $('history-rows');
+  const emptyEl   = $('history-empty');
+  const tableWrap = $('history-table-wrap');
+
+  // Rebuild filter dropdown
+  const selectedVal = filterEl.value || 'all';
+  filterEl.innerHTML = '<option value="all">All Goals</option>';
+  goals.forEach(g => {
+    const opt = document.createElement('option');
+    opt.value = g.id;
+    opt.textContent = g.goalName;
+    if (g.id === selectedVal) opt.selected = true;
+    filterEl.appendChild(opt);
+  });
+
+  // Collect all transactions with goal name attached
+  const filterGoalId = filterEl.value;
+  let allTx = [];
+  goals.forEach(g => {
+    if (filterGoalId !== 'all' && g.id !== filterGoalId) return;
+    g.transactions.forEach(tx => {
+      allTx.push({ ...tx, goalName: g.goalName, goalId: g.id });
+    });
+  });
+
+  // Sort newest first
+  allTx.sort((a, b) => b._ts - a._ts);
+
+  rowsEl.innerHTML = '';
+
+  if (!allTx.length) {
+    emptyEl.classList.remove('hidden');
+    tableWrap.classList.add('hidden');
     return;
   }
-  const head = document.createElement('div');
-  head.className = 'hist-row hist-head';
-  head.innerHTML = '<span>Date</span><span>Action</span><span>Amount</span><span>Balance</span>';
-  histBody.appendChild(head);
-  g.transactions.slice().reverse().forEach(tx => {
+
+  emptyEl.classList.add('hidden');
+  tableWrap.classList.remove('hidden');
+
+  allTx.forEach(tx => {
     const row = document.createElement('div');
-    row.className = 'hist-row';
+    row.className = 'hist-row hist-row-history';
     const dep = tx.action === 'Deposit';
     row.innerHTML = `
       <span class="hist-date">${tx.date}</span>
+      <span class="hist-goal-name">${tx.goalName}</span>
       <span class="hist-action">${tx.action}</span>
       <span class="${dep ? 'hist-amt-dep' : 'hist-amt-wit'}">${dep ? '+' : '-'}₱${fmt(tx.amount)}</span>
-      <span class="hist-balance">₱${fmt(tx.balance)}</span>`;
-    histBody.appendChild(row);
+      <span class="hist-balance">₱${fmt(tx.balance)}</span>
+    `;
+    rowsEl.appendChild(row);
   });
 }
 
@@ -317,7 +340,6 @@ function createGoal() {
   goals.push(g);
   activeId = g.id;
 
-  // Reset form
   if (goalCategoryInp) goalCategoryInp.value = '';
   if (goalNameInp)     goalNameInp.value = '';
   if (customGoalField) customGoalField.classList.add('hidden');
@@ -386,7 +408,7 @@ function deleteGoal() {
   const g = getActive();
   if (!g) return;
   if (!confirm(`Delete "${g.goalName}"? This cannot be undone.`)) return;
-  goals = goals.filter(x => x.id !== g.id);
+  goals    = goals.filter(x => x.id !== g.id);
   activeId = null;
   save();
   showScreen('dashboard');
@@ -401,12 +423,11 @@ withdrawBtn.addEventListener('click', withdraw);
 depositAmt.addEventListener('keydown', e => { if (e.key === 'Enter') deposit(); });
 goalAmtInp.addEventListener('keydown', e => { if (e.key === 'Enter') createGoal(); });
 
-resetBtn.addEventListener('click', () => {
-  // "Start New Goal" from tracker → go to setup screen
-  showScreen('setup');
-});
-
+resetBtn.addEventListener('click', () => showScreen('setup'));
 $('delete-goal-btn')?.addEventListener('click', deleteGoal);
+
+// History filter change
+$('history-filter')?.addEventListener('change', renderHistory);
 
 // Sidebar nav
 document.querySelectorAll('.nav-item').forEach(btn => {
@@ -421,6 +442,9 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     } else if (screen === 'tracker' && activeId) {
       showScreen('tracker');
       renderTracker();
+    } else if (screen === 'history') {
+      showScreen('history');
+      renderHistory();
     }
   });
 });
@@ -428,7 +452,6 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 // ── INIT ──────────────────────────────────────────────────────
 load();
 
-// Show dashboard if goals exist, else setup
 if (goals.length > 0) {
   showScreen('dashboard');
   renderDashboard();

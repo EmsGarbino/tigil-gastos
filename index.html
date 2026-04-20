@@ -48,6 +48,10 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
           Viewing Jar
         </button>
+        <button class="nav-item" data-screen="history">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 3"/><path d="M3.05 11a9 9 0 1 1 .5 4"/><polyline points="3 16 3 11 8 11"/></svg>
+          History
+        </button>
       </nav>
 
       <div class="sidebar-footer">
@@ -245,27 +249,47 @@
                 <button class="btn-action btn-green hidden" id="withdraw-btn">Withdraw</button>
               </div>
             </div>
-          </div>
-        </div>
 
-        <div class="tracker-row2">
-          <div class="hist-panel">
-            <h3 class="hist-title">Transaction History</h3>
-            <div class="hist-body" id="hist-body">
-              <p class="hist-empty">No transactions yet.</p>
+            <div class="log-panel">
+              <div class="log-header">
+                <span class="log-dot"></span>
+                <span class="log-title">Smart Contract Log</span>
+                <span class="log-badge">Soroban</span>
+              </div>
+              <ul class="log-list" id="log-list"></ul>
             </div>
-          </div>
-          <div class="log-panel">
-            <div class="log-header">
-              <span class="log-dot"></span>
-              <span class="log-title">Smart Contract Log</span>
-              <span class="log-badge">Soroban</span>
-            </div>
-            <ul class="log-list" id="log-list"></ul>
           </div>
         </div>
 
       </section>
+
+      <!-- ══ HISTORY SCREEN ══ -->
+      <section id="history-screen" class="screen hidden">
+        <div class="page-header">
+          <div>
+            <h2 class="page-title">Transaction History</h2>
+            <p class="page-desc">A full log of all deposits and withdrawals across your jars.</p>
+          </div>
+          <div class="select-wrap" style="min-width:200px;">
+            <select class="inp sel" id="history-filter">
+              <option value="all">All Goals</option>
+            </select>
+            <span class="select-arrow">▾</span>
+          </div>
+        </div>
+
+        <p class="hist-empty hidden" id="history-empty" style="text-align:left; padding:3rem 0; font-size:0.95rem;">
+          No transactions yet. Start depositing into a jar!
+        </p>
+
+        <div class="glass-card" id="history-table-wrap">
+          <div class="hist-row hist-head">
+            <span>Date</span><span>Goal</span><span>Action</span><span>Amount</span><span>Balance</span>
+          </div>
+          <div id="history-rows"></div>
+        </div>
+      </section>
+
     </main>
   </div>
 

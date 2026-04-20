@@ -180,7 +180,6 @@
 }
 .setup-form-card { /* extends .glass-card */ }
 
-/* How it works panel */
 .setup-preview {
   background: var(--surface);
   border: 1.5px solid var(--border2);
@@ -271,14 +270,6 @@
   gap: 1.25rem;
 }
 
-/* ── TRACKER ROW 2: history + log ───────────────────────── */
-.tracker-row2 {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.5rem;
-  align-items: start;
-}
-
 /* ── ACTION CARDS ────────────────────────────────────────── */
 .action-row {
   display: grid;
@@ -292,6 +283,20 @@
   color: var(--text);
   margin-bottom: 4px;
   letter-spacing: -0.01em;
+}
+
+/* ── HISTORY SCREEN ──────────────────────────────────────── */
+/* 5-column rows for the history table (date / goal / action / amount / balance) */
+#history-screen .hist-row {
+  grid-template-columns: 0.8fr 1.4fr 1fr 1fr 1fr;
+}
+.hist-goal-name {
+  color: var(--text2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ── BG COINS ────────────────────────────────────────────── */
@@ -319,9 +324,6 @@
 .c6 { left: 91%; bottom: -80px; animation-duration: 17s; animation-delay: 4s;  font-size: 1rem; }
 
 /* ── RESPONSIVE ──────────────────────────────────────────── */
-@media (max-width: 1200px) {
-  .tracker-row2 { grid-template-columns: 1fr; }
-}
 @media (max-width: 1024px) {
   .setup-grid { grid-template-columns: 1fr; }
   .setup-preview { display: none; }
@@ -332,6 +334,8 @@
   .sidebar { width: 200px; }
   .screen { padding: 1.5rem; }
   .topbar { padding: 1rem 1.5rem; }
+  #history-screen .hist-row { grid-template-columns: 0.8fr 1fr 1fr 1fr; }
+  #history-screen .hist-goal-name { display: none; }
 }
 @media (max-width: 600px) {
   .site-wrap { flex-direction: column; }

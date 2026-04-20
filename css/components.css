@@ -221,3 +221,60 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 .success-icon { font-size: 2rem; animation: gentleBob 2s ease-in-out infinite; }
 .success-banner strong { color: var(--purple); font-size: 1rem; display: block; margin-bottom: 2px; font-family: var(--font-display); }
 .success-banner p { font-size: 0.82rem; color: var(--text2); }
+
+/* ── TRANSACTION HISTORY (left panel) ───────────────────── */
+.hist-panel {
+  background: var(--surface);
+  border: 1.5px solid var(--border2);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: 0 1px 0 #fff inset, 0 4px 16px rgba(44,31,14,0.07);
+}
+.hist-title {
+  font-family: var(--font-display);
+  font-size: 0.97rem;
+  font-weight: 700;
+  color: var(--text2);
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.01em;
+}
+.hist-body {
+  max-height: 260px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border2) transparent;
+}
+.hist-empty {
+  text-align: center;
+  color: var(--text3);
+  font-size: 0.85rem;
+  padding: 1rem 0;
+}
+.hist-row {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr 1fr;
+  gap: 8px;
+  padding: 9px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  align-items: center;
+  animation: fadeUp 0.3s ease both;
+  border-bottom: 1px solid var(--border2);
+}
+.hist-row:last-child { border-bottom: none; }
+.hist-row:hover { background: var(--bg2); }
+.hist-head {
+  font-size: 0.63rem;
+  font-weight: 700;
+  color: var(--text3);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  border-bottom: 1.5px solid var(--border2);
+  padding-bottom: 6px;
+  margin-bottom: 4px;
+}
+.hist-date    { color: var(--text3); font-family: var(--font-mono); font-size: 0.71rem; }
+.hist-action  { color: var(--text2); font-weight: 700; }
+.hist-amt-dep { color: var(--gold2); font-family: var(--font-mono); font-weight: 600; }
+.hist-amt-wit { color: var(--red);   font-family: var(--font-mono); font-weight: 600; }
+.hist-balance { color: var(--text2); font-family: var(--font-mono); font-size: 0.74rem; }
