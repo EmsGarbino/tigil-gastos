@@ -1,52 +1,47 @@
 # 💰 TigilGastos
-
-TigilGastos is a web-based savings tracker designed to help students save money for tuition through a smart locking mechanism. Once a savings goal is set and locked, funds cannot be withdrawn until the goal amount or target date is reached, encouraging financial discipline and preventing impulsive spending.
+TigilGastos is a web-based savings tracker designed to help students manage and protect their money across multiple financial goals — from tuition and enrollment fees to rent, gadgets, travel funds, and more. Through a smart locking mechanism powered by a Soroban smart contract, deposited funds cannot be withdrawn until the goal amount or target date is reached, encouraging consistent saving and preventing impulsive spending.
 
 ---
 
 ## 📌 Problem
-
-A college student in Quezon City struggles to consistently save for tuition because they frequently spend their money on daily expenses, leading to insufficient funds and stress when payment deadlines arrive.
+College students in urban areas like Quezon City often struggle to save consistently. Daily expenses — food, transportation, load, and leisure — eat into their budget, leaving them short when it matters most: tuition deadlines, semester enrollment, or unexpected emergencies. Without a structured system, money set aside for a goal is easy to spend before it's needed.
 
 ---
 
 ## 💡 Solution
-
-TigilGastos enables the student to lock their savings using a Soroban smart contract, where deposits are recorded on-chain and cannot be withdrawn until the goal amount or target date is met, leveraging Stellar’s fast transactions and low fees for secure and reliable savings enforcement.
+TigilGastos lets students create multiple savings jars, each tied to a specific goal and target date. Once a jar is locked, a Soroban smart contract enforces the saving conditions — deposits are recorded on-chain and funds cannot be withdrawn until the goal amount is reached or the target date arrives. Built on Stellar's fast and low-fee network, it makes disciplined saving simple, transparent, and tamper-proof.
 
 ---
 
 ## ⚙️ Core Features (MVP)
-
-- Set a savings goal (e.g., ₱8,000) and target date  
-- Automatically create a Soroban smart contract to store goal and lock conditions  
-- Deposit funds with transactions recorded on-chain  
-- Prevent withdrawals while funds are locked  
-- Trigger claim once goal amount or date is reached  
-- Smart contract verifies conditions before releasing funds  
+- Create multiple savings jars across different goal categories
+- Supported categories include: Tuition Fee, Semester Enrollment, Books & Supplies, Laptop or Gadget, Boarding House Rent, Monthly Allowance, Grocery & Food, Transportation, Emergency Fund, Travel Fund, New Phone or Device, Side Business, and custom goals
+- Set a target amount and target date per jar
+- Automatically deploy a Soroban smart contract per goal to store and enforce lock conditions
+- Deposit funds with all transactions recorded on-chain
+- Prevent withdrawals while the jar is locked
+- Trigger claim once the goal amount or target date is reached
+- Smart contract verifies conditions before releasing funds
 
 ---
 
 ## 👥 Target Users
-
-College students in urban areas such as Quezon City who have limited disposable income and struggle with consistent saving habits, motivating them to use a locked savings system to avoid unnecessary spending and ensure funds are available for tuition.
+College students in urban areas such as Quezon City who have limited disposable income and struggle with consistent saving habits — whether saving for tuition, living expenses, or personal milestones. TigilGastos gives them a reliable, self-enforced system to keep their money safe from impulsive spending until it's truly needed.
 
 ---
 
 ## 🚀 How It Works
+**User Action → On-chain Action → Result**
 
-User Action → On-chain Action → Result  
-
-The user sets a savings goal and target date, which creates a smart contract storing the conditions; the user deposits money and transactions are recorded on-chain while funds remain locked; once the goal or date is reached, the user triggers a claim and the smart contract verifies conditions before releasing the funds.
+1. The user creates a savings jar, picks a goal category (or sets a custom one), and sets a target amount and date — this deploys a Soroban smart contract storing the lock conditions.
+2. The user deposits money into the jar at any time — each deposit is recorded on-chain while funds remain locked.
+3. Once the goal amount is reached or the target date arrives, the user triggers a claim — the smart contract verifies the conditions and releases the funds.
 
 ---
 
 ## 🌐 On-Chain Verification
-
 All contract logic, user interactions, and transactions are publicly verifiable on the Stellar ledger.
-
 https://stellar.expert/explorer/testnet/contract/CCWF5BAC64WL66V5UVSDUVB6LEQKYBBW35E7WF45Q5WTIXMSJXCSKL7E
-
 ![On-Chain Proof](https://github.com/user-attachments/assets/317e6ad7-81e4-4856-bdb0-8006b296b0f6)
 
 ---
