@@ -2,6 +2,8 @@
 TigilGastos is a web-based savings tracker designed to help students manage and protect their money across multiple financial goals — from tuition and enrollment fees to rent, gadgets, travel funds, and more. Through a smart locking mechanism powered by a Soroban smart contract, deposited funds cannot be withdrawn until the goal amount or target date is reached, encouraging consistent saving and preventing impulsive spending.
 
 ---
+## 🔗 Live Demo
+👉 [https://tigil-gastos.vercel.app](https://tigil-gastos.vercel.app)
 
 ## 📌 Problem
 College students often struggle to save consistently. Daily expenses — food, transportation, load, and leisure — eat into their budget, leaving them short when it matters most: tuition deadlines, semester enrollment, or unexpected emergencies. Without a structured system, money set aside for a goal is easy to spend before it's needed.
