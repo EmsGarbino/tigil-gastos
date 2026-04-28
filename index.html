@@ -44,6 +44,7 @@
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
           New Goal
         </button>
+        <!-- BUG FIX: hidden by default; shown via JS only when a goal is active -->
         <button class="nav-item hidden" data-screen="tracker" id="nav-tracker">
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a10 10 0 1 0 10 10"/><path d="M12 6v6l4 2"/></svg>
           Viewing Jar
@@ -57,6 +58,28 @@
           Profile
         </button>
       </nav>
+
+      <!-- ── WALLET BLOCK ── -->
+      <!-- BUG FIX: wallet UI lives here in the sidebar, NOT in a broken floating div -->
+      <div class="sidebar-wallet">
+        <div class="sidebar-wallet-label">Stellar Wallet</div>
+
+        <!-- Disconnected state -->
+        <button class="btn-wallet-connect" id="connect-wallet-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+          Connect Wallet
+        </button>
+
+        <!-- Connected state (hidden until wallet is linked) -->
+        <div class="wallet-info hidden" id="wallet-info">
+          <div class="wallet-info-row">
+            <span class="wallet-dot"></span>
+            <span class="wallet-network" id="wallet-badge">TESTNET</span>
+          </div>
+          <div class="wallet-address" id="wallet-address">G...????</div>
+          <button class="btn-wallet-disconnect" id="disconnect-wallet-btn">Disconnect</button>
+        </div>
+      </div>
 
       <div class="sidebar-footer">
         <div class="sidebar-user">
@@ -83,6 +106,11 @@
       <div class="topbar">
         <div class="topbar-title" id="topbar-title">My Goals</div>
         <div class="topbar-right">
+          <!-- Compact wallet chip in topbar — mirrors sidebar state -->
+          <div class="topbar-wallet hidden" id="topbar-wallet-chip">
+            <span class="wallet-dot"></span>
+            <span class="topbar-wallet-addr" id="topbar-wallet-addr"></span>
+          </div>
           <span class="topbar-user" id="topbar-user"></span>
         </div>
       </div>
@@ -95,6 +123,13 @@
             <p class="page-desc">Track all your savings jars in one place.</p>
           </div>
           <button class="btn-main btn-main-sm" onclick="showScreen('setup')">+ New Goal</button>
+        </div>
+
+        <!-- Wallet notice: only visible when wallet not connected -->
+        <div class="wallet-notice hidden" id="wallet-notice">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+          <span>Connect your Freighter wallet to link savings to your Stellar account.</span>
+          <button class="wallet-notice-btn" id="wallet-notice-btn">Connect</button>
         </div>
 
         <p class="hist-empty hidden" id="goals-empty" style="text-align:left; padding: 3rem 0; font-size:0.95rem;">
@@ -318,7 +353,6 @@
 
         <div class="profile-grid">
 
-          <!-- Account info card -->
           <div class="glass-card profile-card">
             <div class="profile-avatar" id="profile-avatar">?</div>
             <div class="profile-info">
@@ -345,7 +379,6 @@
             <button class="btn-main" id="profile-save-btn">Save Changes</button>
           </div>
 
-          <!-- Stats summary card -->
           <div class="profile-side">
             <div class="glass-card profile-stats-card">
               <h3 class="profile-section-title">Savings Summary</h3>
@@ -365,22 +398,24 @@
     </main>
   </div>
 
+  <!-- Toast notification for wallet events -->
+  <div class="wallet-toast hidden" id="wallet-toast">
+    <span id="wallet-toast-icon">🔗</span>
+    <span id="wallet-toast-msg">Wallet connected!</span>
+  </div>
+
   <script>
-    /* ── Auth guard ── */
+    /* ── Auth guard: redirect to signin if no session ── */
     const tgUser = localStorage.getItem('tg_user');
     if (!tgUser) { window.location.replace('signin.html'); }
     else {
       try {
         const u     = JSON.parse(tgUser);
         const prefs = JSON.parse(localStorage.getItem('tg_profile') || '{}');
-        const name  = prefs.name || '';
-        const email = u.email || '';
-
-        // Topbar
+        const name  = prefs.name  || '';
+        const email = u.email     || '';
         const topbarEl = document.getElementById('topbar-user');
         if (topbarEl) topbarEl.textContent = name || email;
-
-        // Sidebar user card
         updateSidebarUser(name, email);
       } catch {}
     }
@@ -402,7 +437,7 @@
       window.location.href = 'signin.html';
     });
 
-    /* ── Dropdown toggle ── */
+    /* ── Category dropdown: show/hide custom input ── */
     const categorySelect = document.getElementById('goal-category');
     const customField    = document.getElementById('custom-goal-field');
     const goalNameInput  = document.getElementById('goal-name');
@@ -413,6 +448,9 @@
       else goalNameInput.value = '';
     });
   </script>
+
+  <!-- Freighter API v5 — must load BEFORE app.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/5.0.0/index.min.js"></script>
   <script src="app.js"></script>
 </body>
 </html>

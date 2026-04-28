@@ -1,15 +1,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
+  --bg:        #f0f5e8;
+  --bg2:       #e4edcd;
+  --bg3:       #d8e5bb;
+  --surface:   #ffffff;
+  --surface2:  #edf7bd;
 
-  --bg:       #f0f5e8;     
-  --bg2:      #e4edcd;    
-  --bg3:      #d8e5bb;     
-  --surface:  #ffffff;
-  --surface2: #edf7bd;   
-
-  --border:   #85c79a30;
-  --border2:  #4e8d9c30;
+  --border:    #85c79a30;
+  --border2:   #4e8d9c30;
 
   --gold:      #4e8d9c;
   --gold2:     #3a7080;
@@ -27,9 +26,9 @@
 
   --red:       #c0392b;
 
-  --text:      #281c59;    
-  --text2:     #4e8d9c;     
-  --text3:     #7aaabb;     
+  --text:      #281c59;
+  --text2:     #4e8d9c;
+  --text3:     #7aaabb;
 
   --radius:    12px;
   --radius-sm: 8px;

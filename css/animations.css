@@ -1,81 +1,72 @@
 /* ── KEYFRAMES ───────────────────────────────────────────── */
+
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(20px); }
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(-12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-@keyframes shimmer {
-  0%,100% { background-position: 0% 50%; }
-  50%      { background-position: 100% 50%; }
-}
-@keyframes gentleBob {
-  0%,100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
-}
+
 @keyframes floatUp {
-  from { transform: translateY(0) rotate(0deg); opacity: 0.07; }
-  10%  { opacity: 0.12; }
-  90%  { opacity: 0.05; }
+  from { transform: translateY(0) rotate(0deg);    opacity: 0.06; }
+  10%  { opacity: 0.1; }
+  90%  { opacity: 0.06; }
   to   { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
 }
-@keyframes dropCoin {
-  0%   { top: -30px; opacity: 0; }
-  20%  { opacity: 1; }
-  70%  { top: 60px; opacity: 1; }
-  80%  { top: 60px; opacity: 0; }
-  100% { top: -30px; opacity: 0; }
-}
+
 @keyframes waveAnim {
   0%,100% { transform: scaleY(1) translateX(0); }
-  50%      { transform: scaleY(1.4) translateX(5px); }
+  50%      { transform: scaleY(1.6) translateX(5px); }
 }
+
 @keyframes coinDrop {
   0%   { top: -30px; opacity: 1; transform: rotate(0deg) scale(1.2); }
   80%  { top: 24px;  opacity: 1; transform: rotate(180deg) scale(0.8); }
   100% { top: 28px;  opacity: 0; transform: rotate(240deg) scale(0.5); }
 }
+
+@keyframes dropCoin {
+  0%   { top: -30px; opacity: 0; }
+  20%  { opacity: 1; }
+  70%  { top: 60px;  opacity: 1; }
+  80%  { top: 60px;  opacity: 0; }
+  100% { top: -30px; opacity: 0; }
+}
+
+@keyframes gentleBob {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
+}
+
 @keyframes progGlow {
   0%,100% { opacity: 0.5; }
   50%      { opacity: 1; }
 }
+
 @keyframes pulse {
-  0%,100% { opacity: 1; }
-  50%      { opacity: 0.3; }
+  0%,100% { opacity: 1; box-shadow: 0 0 5px var(--green); }
+  50%      { opacity: 0.35; box-shadow: none; }
 }
+
 @keyframes stampIn {
-  0%   { opacity: 0; transform: scale(1.3) rotate(-4deg); }
-  60%  { transform: scale(0.96) rotate(1deg); }
-  100% { opacity: 1; transform: scale(1) rotate(0deg); }
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
-/* ── FLOATING BG COINS ──────────────────────────────────── */
-.bg-coins {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  overflow: hidden;
+@keyframes slideInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
-.coin {
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 1.4rem;
-  color: var(--gold);
-  opacity: 0.07;
-  animation: floatUp linear infinite;
-  user-select: none;
-}
-.c1 { left: 8%;  bottom: -80px; animation-duration: 14s; animation-delay: 0s;  font-size: 1.8rem; }
-.c2 { left: 22%; bottom: -80px; animation-duration: 19s; animation-delay: 3s; }
-.c3 { left: 45%; bottom: -80px; animation-duration: 16s; animation-delay: 6s;  font-size: 1.1rem; }
-.c4 { left: 63%; bottom: -80px; animation-duration: 21s; animation-delay: 1s; }
-.c5 { left: 80%; bottom: -80px; animation-duration: 13s; animation-delay: 9s;  font-size: 1.6rem; }
-.c6 { left: 91%; bottom: -80px; animation-duration: 17s; animation-delay: 4s;  font-size: 1rem; }
 
-/* ── SETUP JAR ANIMATION ─────────────────────────────────── */
+@keyframes toastIn {
+  from { opacity: 0; transform: translateY(16px) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── ANIMATED COINS (setup screen) ──────────────────────── */
 .anim-coin {
   position: absolute;
   top: -30px;
@@ -87,5 +78,5 @@
   animation: dropCoin 2.4s ease-in-out infinite;
   filter: drop-shadow(0 0 4px var(--gold-glow));
 }
-.anim-coin.d2 { animation-delay: 0.8s; left: 35%; }
-.anim-coin.d3 { animation-delay: 1.6s; left: 62%; }
+.anim-coin.d2 { animation-delay: 0.8s;  left: 35%; }
+.anim-coin.d3 { animation-delay: 1.6s;  left: 62%; }
