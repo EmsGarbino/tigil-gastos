@@ -1,15 +1,9 @@
-/* ============================================================
-   TigilGastos – app.js  (v3 — multi-goal + Freighter wallet)
-   Vanilla JS + localStorage
-   Soroban smart contract functions: simulated
-   ============================================================ */
-
 const STORE_KEY = 'tigilgastos_v3';
 
 // ── STATE ─────────────────────────────────────────────────────
 let goals         = [];
 let activeId      = null;
-let walletAddress = null;  // connected Freighter public key
+let walletAddress = null;  
 
 function newGoal(name, amount, date) {
   return {
@@ -138,170 +132,127 @@ const logList     = $('log-list');
 const histBody    = $('hist-body');
 const resetBtn    = $('reset-btn');
 
-// Wallet DOM — now correctly maps to sidebar IDs in index.html
-const connectBtn      = $('connect-wallet-btn');
-const disconnectBtn   = $('disconnect-wallet-btn');
-const walletInfo      = $('wallet-info');        // connected state block
-const walletBadge     = $('wallet-badge');       // network label e.g. "TESTNET"
-const walletAddrEl    = $('wallet-address');     // short address in sidebar
-const topbarChip      = $('topbar-wallet-chip'); // compact chip in topbar
-const topbarAddrEl    = $('topbar-wallet-addr'); // address in topbar chip
-const walletNotice    = $('wallet-notice');      // dashboard banner
-const walletNoticeBtn = $('wallet-notice-btn');  // banner connect button
-const walletToast     = $('wallet-toast');       // toast notification
-const walletToastMsg  = $('wallet-toast-msg');
-const walletToastIcon = $('wallet-toast-icon');
+// ── WALLET DOM REFS ───────────────────────────────────────────
+const connectBtn         = $('connect-wallet-btn');
+const disconnectBtn      = $('disconnect-wallet-btn');
+const walletInfo         = $('wallet-info');
+const walletDisconnState = $('wallet-disconnected-state');
+const walletBadgeEl      = $('wallet-badge');
+const walletAddrEl       = $('wallet-address');
+const walletBalanceEl    = $('wallet-balance');
+const walletRefreshBtn   = $('wallet-refresh-btn');
+const topbarChip         = $('topbar-wallet-chip');
+const topbarAddrEl       = $('topbar-wallet-addr');
+const walletNotice       = $('wallet-notice');
+const walletNoticeBtn    = $('wallet-notice-btn');
+const walletToast        = $('wallet-toast');
+const walletToastMsg     = $('wallet-toast-msg');
+const walletToastIcon    = $('wallet-toast-icon');
+const friendbotBtn       = $('friendbot-btn');
 
-// ── WALLET: UI UPDATERS ───────────────────────────────────────
-function setWalletUI(connected, network) {
-  if (connected && walletAddress) {
-    // Sidebar: hide connect button, show info block
-    connectBtn?.classList.add('hidden');
-    walletInfo?.classList.remove('hidden');
-    if (walletBadge)  walletBadge.textContent  = network || 'TESTNET';
-    if (walletAddrEl) walletAddrEl.textContent = shortAddr(walletAddress);
+// Send XLM modal refs
+const sendModalOverlay  = $('send-modal-overlay');
+const openSendModalBtn  = $('open-send-modal-btn');
+const closeSendModalBtn = $('close-send-modal-btn');
+const sendDestInput     = $('send-destination');
+const sendAmtInput      = $('send-amount');
+const sendMemoInput     = $('send-memo');
+const sendSubmitBtn     = $('send-submit-btn');
+const modalFromAddr     = $('modal-from-addr');
+const modalBalance      = $('modal-balance');
 
-    // Topbar chip
+// ── WALLET: REACT TO STATE CHANGES FROM stellar.js ───────────
+function onWalletChange({ publicKey, network, xlmBalance }) {
+  const connected = !!publicKey;
+
+  walletDisconnState?.classList.toggle('hidden', connected);
+  walletInfo?.classList.toggle('hidden', !connected);
+
+  if (connected) {
+    const short = StellarWallet.shortAddr(publicKey);
+    if (walletBadgeEl)   walletBadgeEl.textContent   = network || 'TESTNET';
+    if (walletAddrEl)    walletAddrEl.textContent    = short;
+    if (walletBalanceEl) walletBalanceEl.textContent =
+      xlmBalance != null ? `${xlmBalance} XLM` : 'Loading…';
     topbarChip?.classList.remove('hidden');
-    if (topbarAddrEl) topbarAddrEl.textContent = shortAddr(walletAddress);
-
-    // Dashboard notice: hide it (wallet is connected)
+    if (topbarAddrEl)    topbarAddrEl.textContent    = short;
+    if (modalFromAddr)   modalFromAddr.textContent   = short;
+    if (modalBalance)    modalBalance.textContent    = xlmBalance || '…';
     walletNotice?.classList.add('hidden');
   } else {
-    // Sidebar: show connect button, hide info block
-    connectBtn?.classList.remove('hidden');
-    walletInfo?.classList.add('hidden');
-
-    // Topbar chip: hide
     topbarChip?.classList.add('hidden');
-
-    // Dashboard notice: show it
     walletNotice?.classList.remove('hidden');
+    if (walletBalanceEl) walletBalanceEl.textContent = '—';
   }
+
+  // Persist public key in app state
+  walletAddress = publicKey || null;
+  save();
 }
 
-function showToast(icon, msg, durationMs = 3000) {
+function showToast(icon, msg, ms = 3000) {
   if (!walletToast) return;
   if (walletToastIcon) walletToastIcon.textContent = icon;
   if (walletToastMsg)  walletToastMsg.textContent  = msg;
   walletToast.classList.remove('hidden');
-  setTimeout(() => walletToast.classList.add('hidden'), durationMs);
+  setTimeout(() => walletToast.classList.add('hidden'), ms);
 }
 
-// ── WALLET: FREIGHTER HOOK ────────────────────────────────────
-// The CDN bundle (v5) exposes the API as window.freighterApi.
-// Older bundles used window.StellarFreighterApi — we check both.
-// API shape: every function returns an object, e.g. { isConnected: bool }
-// or { address: string } or { error: string } on failure.
+// Register listener with stellar.js module
+StellarWallet.Wallet.onChange(onWalletChange);
 
-function getApi() {
-  // v5 CDN global name. Fallback to v2 name just in case.
-  return window.freighterApi || window.StellarFreighterApi || null;
-}
+// Button events
+connectBtn?.addEventListener('click', async () => {
+  const pk = await StellarWallet.connectWallet();
+  if (pk) showToast('🔗', `Connected: ${StellarWallet.shortAddr(pk)}`);
+});
+disconnectBtn?.addEventListener('click', () => {
+  StellarWallet.disconnectWallet();
+  showToast('🔓', 'Wallet disconnected.');
+});
+walletNoticeBtn?.addEventListener('click', async () => {
+  const pk = await StellarWallet.connectWallet();
+  if (pk) showToast('🔗', `Connected: ${StellarWallet.shortAddr(pk)}`);
+});
+walletRefreshBtn?.addEventListener('click', async () => {
+  if (walletBalanceEl) walletBalanceEl.textContent = 'Refreshing…';
+  await StellarWallet.fetchBalance();
+});
+friendbotBtn?.addEventListener('click', () => StellarWallet.fundWithFriendbot());
 
-async function connectWallet() {
-  const api = getApi();
-  if (!api) {
-    alert(
-      'Freighter extension not found.\n\n' +
-      '1. Install it from freighter.app\n' +
-      '2. Refresh this page\n' +
-      '3. Make sure you are on a local server (not file://)'
-    );
+// ── SEND XLM MODAL ───────────────────────────────────────────
+function openSendModal() {
+  if (!StellarWallet.Wallet.isConnected()) {
+    showToast('⚠️', 'Connect your Freighter wallet first.');
     return;
   }
-
-  try {
-    // Step 1 — check if extension is installed and unlocked
-    const connResult = await api.isConnected();
-    // v5 returns { isConnected: bool }, v2 returns bool directly
-    const isConn = connResult?.isConnected ?? connResult;
-    if (!isConn) {
-      alert('Please open Freighter, unlock your wallet, then try again.');
-      return;
-    }
-
-    // Step 2 — requestAccess() is what actually prompts the user approval popup.
-    // getAddress() only works silently AFTER the user has already approved once.
-    // So always call requestAccess first.
-    let address = null;
-    if (typeof api.requestAccess === 'function') {
-      const accessResult = await api.requestAccess();
-      // requestAccess returns { address } on approval, or { error } on denial
-      if (accessResult?.error) {
-        alert('Wallet access denied: ' + accessResult.error);
-        return;
-      }
-      address = accessResult?.address || accessResult;
-    } else {
-      // Older API fallback — getPublicKey was used in v1
-      const addrResult = await (api.getAddress?.() || api.getPublicKey?.());
-      address = addrResult?.address || addrResult?.publicKey || addrResult;
-    }
-
-    if (!address || typeof address !== 'string') {
-      alert('Could not get wallet address. Make sure Freighter is unlocked and try again.');
-      return;
-    }
-
-    // Step 3 — get which network they're on
-    const netResult = await api.getNetwork();
-    const network   = netResult?.network || netResult || 'TESTNET';
-
-    walletAddress = address;
-    save();
-    setWalletUI(true, network);
-    showToast('🔗', `Connected: ${shortAddr(address)}`);
-
-  } catch (err) {
-    console.error('Freighter connect error:', err);
-    // Show something useful — err might be a string, Error, or object
-    const msg = err?.message || (typeof err === 'string' ? err : JSON.stringify(err));
-    alert('Connection failed: ' + msg);
-  }
+  if (sendDestInput)  sendDestInput.value  = '';
+  if (sendAmtInput)   sendAmtInput.value   = '';
+  if (sendMemoInput)  sendMemoInput.value  = '';
+  $('tx-result')?.classList.add('hidden');
+  if (modalFromAddr) modalFromAddr.textContent = StellarWallet.shortAddr(StellarWallet.Wallet.publicKey);
+  if (modalBalance)  modalBalance.textContent  = StellarWallet.Wallet.xlmBalance || '…';
+  sendModalOverlay?.classList.remove('hidden');
+  setTimeout(() => sendDestInput?.focus(), 60);
 }
+function closeSendModal() { sendModalOverlay?.classList.add('hidden'); }
 
-function disconnectWallet() {
-  walletAddress = null;
-  save();
-  setWalletUI(false, null);
-  showToast('🔓', 'Wallet disconnected.');
-}
+openSendModalBtn?.addEventListener('click', openSendModal);
+closeSendModalBtn?.addEventListener('click', closeSendModal);
+sendModalOverlay?.addEventListener('click', e => { if (e.target === sendModalOverlay) closeSendModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSendModal(); });
 
-// Silently re-verify on page load if a wallet was previously saved
-async function autoReconnectWallet() {
-  if (!walletAddress) return;           // nothing saved, skip
-  const api = getApi();
-  if (!api) return;                     // extension not installed, skip silently
-
-  try {
-    const connResult = await api.isConnected();
-    const isConn = connResult?.isConnected ?? connResult;
-    if (!isConn) { disconnectWallet(); return; }
-
-    // Use getAddress (silent — user already approved previously)
-    const addrResult = await api.getAddress?.();
-    const address = addrResult?.address || addrResult?.publicKey || addrResult;
-
-    if (address && address === walletAddress) {
-      const netResult = await api.getNetwork();
-      const network   = netResult?.network || netResult || 'TESTNET';
-      setWalletUI(true, network);
-    } else {
-      // Wallet changed or mismatch — clear saved address
-      disconnectWallet();
-    }
-  } catch {
-    // Any error during silent reconnect — clear state, don't alert user
-    walletAddress = null;
-    save();
-    setWalletUI(false, null);
-  }
-}
-
-connectBtn?.addEventListener('click', connectWallet);
-disconnectBtn?.addEventListener('click', disconnectWallet);
-walletNoticeBtn?.addEventListener('click', connectWallet);  // dashboard banner shortcut
+sendSubmitBtn?.addEventListener('click', async () => {
+  sendSubmitBtn.disabled = true;
+  sendSubmitBtn.textContent = 'Sending…';
+  await StellarWallet.sendPayment(
+    sendDestInput?.value || '',
+    sendAmtInput?.value  || '',
+    sendMemoInput?.value || ''
+  );
+  sendSubmitBtn.disabled = false;
+  sendSubmitBtn.textContent = 'Send XLM →';
+});
 
 // ── SCREEN SWITCHING ──────────────────────────────────────────
 window.showScreen = showScreen;
@@ -330,8 +281,10 @@ function renderDashboard() {
   if (!grid) return;
   grid.innerHTML = '';
 
-  // Wallet notice visibility
-  setWalletUI(!!walletAddress, null);
+  // Wallet notice: show if not connected, hide if connected
+  if (walletNotice) {
+    walletNotice.classList.toggle('hidden', !!walletAddress);
+  }
 
   if (!goals.length) {
     empty?.classList.remove('hidden');
@@ -740,16 +693,18 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 // ── INIT ──────────────────────────────────────────────────────
 load();
 
-// BUG FIX: if activeId was restored from storage, show the nav tab immediately
+// Show "Viewing Jar" nav tab if a goal was active when user last left
 if (activeId) {
   $('nav-tracker')?.classList.remove('hidden');
 }
 
-// Restore wallet UI from saved state (visual only — no API call yet)
-setWalletUI(!!walletAddress, null);
+// Restore wallet notice visibility immediately from saved state
+if (!walletAddress) {
+  walletNotice?.classList.remove('hidden');
+}
 
-// Then try to silently re-verify with Freighter (async, non-blocking)
-autoReconnectWallet();
+// Silently re-verify with Freighter if a public key was previously saved
+StellarWallet.autoReconnect(walletAddress);
 
 // Pick the right starting screen
 if (goals.length > 0) {

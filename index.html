@@ -60,23 +60,43 @@
       </nav>
 
       <!-- ── WALLET BLOCK ── -->
-      <!-- BUG FIX: wallet UI lives here in the sidebar, NOT in a broken floating div -->
       <div class="sidebar-wallet">
         <div class="sidebar-wallet-label">Stellar Wallet</div>
 
-        <!-- Disconnected state -->
-        <button class="btn-wallet-connect" id="connect-wallet-btn">
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
-          Connect Wallet
-        </button>
+        <!-- DISCONNECTED STATE -->
+        <div id="wallet-disconnected-state">
+          <button class="btn-wallet-connect" id="connect-wallet-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>
+            Connect Wallet
+          </button>
+          <p class="wallet-hint">Requires Freighter extension</p>
+        </div>
 
-        <!-- Connected state (hidden until wallet is linked) -->
+        <!-- CONNECTED STATE -->
         <div class="wallet-info hidden" id="wallet-info">
+          <!-- Network + status dot -->
           <div class="wallet-info-row">
             <span class="wallet-dot"></span>
             <span class="wallet-network" id="wallet-badge">TESTNET</span>
+            <button class="wallet-refresh-btn" id="wallet-refresh-btn" title="Refresh balance">↻</button>
           </div>
+
+          <!-- Address -->
           <div class="wallet-address" id="wallet-address">G...????</div>
+
+          <!-- XLM Balance — requirement #3 -->
+          <div class="wallet-balance-wrap">
+            <span class="wallet-balance-label">XLM Balance</span>
+            <span class="wallet-balance" id="wallet-balance">—</span>
+          </div>
+
+          <!-- Actions -->
+          <button class="btn-wallet-action btn-wallet-send" id="open-send-modal-btn">
+            ↑ Send XLM
+          </button>
+          <button class="btn-wallet-action btn-wallet-friendbot" id="friendbot-btn">
+            Get Test XLM
+          </button>
           <button class="btn-wallet-disconnect" id="disconnect-wallet-btn">Disconnect</button>
         </div>
       </div>
@@ -398,7 +418,62 @@
     </main>
   </div>
 
-  <!-- Toast notification for wallet events -->
+  <!-- ══ SEND XLM MODAL — requirement #4 ══ -->
+  <div class="modal-overlay hidden" id="send-modal-overlay">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+
+      <div class="modal-header">
+        <h2 class="modal-title" id="modal-title">Send XLM</h2>
+        <button class="modal-close" id="close-send-modal-btn" aria-label="Close">✕</button>
+      </div>
+
+      <!-- Sender info strip -->
+      <div class="modal-from-strip">
+        <span class="modal-from-label">From</span>
+        <span class="modal-from-addr" id="modal-from-addr">—</span>
+        <span class="modal-from-bal">
+          Balance: <strong id="modal-balance">—</strong> XLM
+        </span>
+      </div>
+
+      <div class="modal-body">
+        <!-- Destination -->
+        <div class="field">
+          <label class="lbl" for="send-destination">Destination Address</label>
+          <input class="inp" type="text" id="send-destination"
+            placeholder="GABC…XYZ (Stellar public key)"
+            autocomplete="off" spellcheck="false"/>
+        </div>
+
+        <!-- Amount -->
+        <div class="field">
+          <label class="lbl" for="send-amount">Amount (XLM)</label>
+          <div class="inp-prefix-wrap">
+            <input class="inp inp-prefixed" type="number" id="send-amount"
+              placeholder="0.0000000" min="0.0000001" step="0.0000001"/>
+            <span class="prefix">XLM</span>
+          </div>
+        </div>
+
+        <!-- Optional memo -->
+        <div class="field">
+          <label class="lbl" for="send-memo">Memo <span style="font-weight:400;text-transform:none;letter-spacing:0;">(optional, max 28 chars)</span></label>
+          <input class="inp" type="text" id="send-memo"
+            placeholder="e.g., Tuition payment" maxlength="28"/>
+        </div>
+
+        <!-- Transaction result feedback — requirement #4 -->
+        <div class="tx-result hidden" id="tx-result"></div>
+
+        <button class="btn-main" id="send-submit-btn" style="margin-top:1rem;">
+          Send XLM →
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Toast notification -->
   <div class="wallet-toast hidden" id="wallet-toast">
     <span id="wallet-toast-icon">🔗</span>
     <span id="wallet-toast-msg">Wallet connected!</span>
@@ -449,8 +524,16 @@
     });
   </script>
 
-  <!-- Freighter API v5 — must load BEFORE app.js -->
+  <!-- Stellar SDK: build + submit transactions (loads as window.StellarSdk) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-sdk/12.3.0/stellar-sdk.min.js"></script>
+
+  <!-- Freighter API v5: wallet connect/sign (loads as window.freighterApi) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/stellar-freighter-api/5.0.0/index.min.js"></script>
+
+  <!-- Stellar + Freighter logic (must come before app.js) -->
+  <script src="stellar.js"></script>
+
+  <!-- Main app -->
   <script src="app.js"></script>
 </body>
 </html>

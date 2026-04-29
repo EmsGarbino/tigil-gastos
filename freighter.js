@@ -1,12 +1,9 @@
-// ── freighter.js ── Your custom "hook" / wallet module
-
 const FreighterWallet = {
   publicKey: null,
   network: null,
   isConnected: false,
-  listeners: [],            // for reactive UI updates
+  listeners: [],            
 
-  // Call this to notify UI whenever wallet state changes
   onChange(fn) {
     this.listeners.push(fn);
   },
@@ -14,14 +11,12 @@ const FreighterWallet = {
     this.listeners.forEach(fn => fn({ ...this }));
   },
 
-  // Check if Freighter extension is installed
   async checkInstalled() {
     if (typeof window.freighterApi === 'undefined') return false;
     const res = await window.freighterApi.isConnected();
     return res.isConnected === true;
   },
 
-  // Connect wallet — prompts user to approve your app
   async connect() {
     const installed = await this.checkInstalled();
     if (!installed) {
